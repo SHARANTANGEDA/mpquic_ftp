@@ -1,24 +1,16 @@
-# MPQUIC Video Stream using RTSP and RTP Protocols from scratch in GO
+# File Transfer with MPQUIC in GO
 
-## Follow the instructions in CoNEXT 17 mp-quic site (_MUST_)
+This Project depends on another private project, which implements MPQUIC
 
-## Make sure to change quic-go repo version to 0.11.2 before add remote of MP-QUIC
-## This setup uses mininet Native install on MPTCP kernel by progmp and GoGTK for playing the video
-### This application is for **`Go 1.14.2`**
+You are expected to have access to [MPQUIC Stand Alone Package](https://github.com/SHARANTANGEDA/mp-quic), to be able to use this application 
 
-`export GOPRIVATE=github.com/SHARANTANGEDA/mp-quic`
+Go Required: _1.12 +_
 
-### Instructions to run in mininet
-1. `cd mininet_version`
-2. `sudo python3 mininet_run.py`
+Enable environment variable: `export GOPRIVATE=github.com/SHARANTANGEDA/mp-quic`
 
-### Instructions for custom build
+Sync dependencies after enabling the environment variable
 
-##### For Server build
-`sudo GO111MODULE=off go build server.go server_worker.go rtp_packet.go video_stream.go`
-##### For Client Build
-`sudo GO111MODULE=off go build client.go client_worker.go rtp_packet.go`
 ##### Server Run
-`./server`
+`go build server.go`
 ##### Client Run
-`./client [SERVER IP RTSP] 1060 3001 video3.mjpeg`
+`cd client && go build client.go`

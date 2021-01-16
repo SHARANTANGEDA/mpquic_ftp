@@ -1,0 +1,1 @@
+cd client && sudo GO111MODULE=off go build client.go client_worker.go rtp_packet.go && ./client localhost 1060 3001 video3.mjpeg

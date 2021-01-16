@@ -1,0 +1,1 @@
+sudo GO111MODULE=off go build server.go server_worker.go rtp_packet.go video_stream.go  && ./server

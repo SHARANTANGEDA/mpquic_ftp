@@ -34,7 +34,10 @@ func main() {
 
 	fileBytes, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		fmt.Println("Error in Getting File: ", err.Error())
+		fmt.Println("File Not Found: ", err.Error())
+		uploadStream.Close()
+		session.Close(err)
+		os.Exit(1)
 	}
 
 	byteCnt := len(fileBytes)

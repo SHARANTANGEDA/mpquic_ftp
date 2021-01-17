@@ -1,75 +1,80 @@
 package main
 
 import (
-	"bufio"
 	"crypto/tls"
+	"flag"
 	"fmt"
-	"io"
-	"io/ioutil"
+	"log"
 	"os"
+	"strings"
 
 	quic "github.com/SHARANTANGEDA/mp-quic"
+	mpqConstants "github.com/SHARANTANGEDA/mp-quic/constants"
+
+	"github.com/SHARANTANGEDA/mpquic_ftp/common"
 	"github.com/SHARANTANGEDA/mpquic_ftp/constants"
 )
 
 func main() {
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Enter Absolute Path of the file to upload: ")
-	filePath, _ := reader.ReadString('\n')
-	filePath = filePath[:len(filePath)-1]
-	cfgClient := &quic.Config{
-		CreatePaths: true,
-	}
+	action, fileName, cfgClient := initializeClientArguments()
 	tlsConfig := &tls.Config{InsecureSkipVerify: true}
 	session, err := quic.DialAddr(constants.SERVER_PUBLIC_ADDRESS+":"+constants.SERVER_PORT, tlsConfig, cfgClient)
 	if err != nil {
-		fmt.Println("Error:", err)
+		log.Fatal("Error connecting to server: ", err.Error())
 	}
 
-	fmt.Println("Uploading... ", filePath)
-	uploadStream, err := session.OpenStreamSync()
-	if err != nil {
-		fmt.Println("Error in Creating upload stream: ", err)
-	}
+	if action == "1" {
+		// GET File List
+		common.SendStringWithQUIC(session, action+",")
 
-	fileBytes, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		fmt.Println("File Not Found: ", err.Error())
-		uploadStream.Close()
-		session.Close(err)
-		os.Exit(1)
-	}
+		// Receive File List
+		fileNameList := strings.Split(common.ReadDataWithQUIC(session), ",")
 
-	byteCnt := len(fileBytes)
-	byteTracker := 0
-	for {
-
-		if byteCnt-byteTracker > constants.MAX_PACKET_CONTENT_SIZE {
-			_, err = uploadStream.Write(fileBytes[byteTracker : byteTracker+constants.MAX_PACKET_CONTENT_SIZE])
-			byteTracker += constants.MAX_PACKET_CONTENT_SIZE
-			if err != nil {
-				fmt.Println("Error in Sending:", err)
-			}
-		} else {
-			_, err = uploadStream.Write(fileBytes[byteTracker:byteCnt])
-			if err != nil {
-				fmt.Println("Error in Sending:", err)
-			}
-			break
+		// Print File List
+		fmt.Println("Available Files: ")
+		for idx, file := range fileNameList {
+			fmt.Println(idx+1, ": ", file)
 		}
-		if err == io.EOF {
-			fmt.Println("End of file Reached")
-			break
-		}
+	} else {
+		// GET File
+		common.SendStringWithQUIC(session, action+","+fileName)
 
+		// Receive File
+		common.StoreFile(fileName, constants.CLIENT_STORAGE_DIR, common.ReadDataWithQUIC(session))
+	}
+	_ = session.Close(err)
+}
+
+func initializeClientArguments() (string, string, *quic.Config) {
+	if os.Getenv(constants.SCHEDULER_OUTPUT_DIR) == "" {
+		panic("`outputDir` Env variable not found")
 	}
 
-	bytesSent, err := uploadStream.GetBytesSent()
-	fmt.Printf("Uploaded: Total Bytes sent: %d \n", bytesSent)
-	uploadStream.Close()
-	session.Close(err)
+	weightsFile := flag.String(constants.TRAIN_WEIGHTS_FILE_PARAM, "", "Path to weights file, a string, used only for ML based scheduler")
+	scheduler := flag.String(constants.SCHEDULER_PARAM, mpqConstants.SCHEDULER_ROUND_ROBIN, "Scheduler Name, a string")
+	createPaths := flag.Bool(constants.CREATE_PATHS_PARAM, true, "a bool(true, false), default: true")
+	train := flag.Bool(constants.TRAINING_PARAMS, false, "a bool(true, false), default: false")
+	dumpExperiences := flag.Bool(constants.DUMP_EXPERIENCES_PARAM, false, "a bool(true, false), default: false")
+	epsilon := flag.Float64(constants.EPSILON_PARAM, 0, "a float64, default: 0 for epsilon value")
+	allowedCongestion := flag.Int(constants.ALLOWED_CONGESTION_PARAM, 10, "a Int, default: 10")
+	action := flag.String(constants.ACTION_PARAM, "1", "1: To Get FileList, 2: Get the file, Default: 1")
+	fileName := flag.String(constants.UPLOAD_FILE_PARAM, "", "Mention the fileName, when action is 2 (Required")
+	flag.Parse()
 
-	if err != nil {
-		fmt.Println("Error closing connection: ", err)
+	if *action != "1" && *action != "2" {
+		log.Fatal("Invalid Action choosen, please choose among 1 or 2")
+	}
+	if *action == "2" && *fileName == "" {
+		log.Fatal("Action 2 requires file_name, please choose file_name")
+	}
+
+	return *action, *fileName, &quic.Config{
+		WeightsFile:       *weightsFile,
+		Scheduler:         *scheduler,
+		CreatePaths:       *createPaths,
+		Training:          *train,
+		DumpExperiences:   *dumpExperiences,
+		Epsilon:           *epsilon,
+		AllowedCongestion: *allowedCongestion,
 	}
 }

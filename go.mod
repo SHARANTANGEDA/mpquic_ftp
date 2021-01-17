@@ -3,9 +3,7 @@ module github.com/SHARANTANGEDA/mpquic_ftp
 go 1.14
 
 require (
-	fyne.io/fyne v1.4.3 // indirect
 	github.com/SHARANTANGEDA/mp-quic v1.0.0
-	github.com/gotk3/gotk3 v0.5.2
-	github.com/lucas-clemente/quic-go v0.19.3
-	github.com/spf13/viper v1.7.1 // indirect
+	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
+	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 )

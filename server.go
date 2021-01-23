@@ -1,38 +1,23 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"os"
-	"time"
+	"strings"
 
 	quic "github.com/SHARANTANGEDA/mp-quic"
+	mpqConstants "github.com/SHARANTANGEDA/mp-quic/constants"
+
 	"github.com/SHARANTANGEDA/mpquic_ftp/common"
 	"github.com/SHARANTANGEDA/mpquic_ftp/constants"
 )
 
-func receiveData(conn quic.Session) ([]byte, int) {
-	// Make a buffer to hold incoming data.
-	buf := make([]byte, 512)
-	// Read the incoming connection into the buffer.
-	stream, err := conn.AcceptStream()
-	if err != nil {
-		return buf, 0 // Data Transfer is done
-	}
-	readLen, err := stream.Read(buf)
-	if err != nil {
-		fmt.Println("Error reading:", err.Error())
-		os.Exit(1)
-	}
-
-	return buf, readLen
-}
-
 func main() {
-
+	cfgServer := initializeServerArguments()
 	serverAddr := constants.SERVER_HOST + ":" + constants.SERVER_PORT
-	cfgServer := &quic.Config{
-		CreatePaths: true,
-	}
 	tlsConfig := common.GenerateTLSConfig()
 	listener, err := quic.ListenAddr(serverAddr, tlsConfig, cfgServer)
 	if err != nil {
@@ -44,35 +29,74 @@ func main() {
 	fmt.Println("Press ^C to shutdown the server")
 
 	for {
-
 		session, err := listener.Accept()
 		if err != nil {
-			fmt.Println("Error accepting: ", err.Error())
-			os.Exit(1)
+			log.Fatal("Error accepting: ", err.Error())
+		}
+		go performServerActivity(session)
+		fmt.Println("Session Started, New Client Spawned")
+	}
+}
+
+// performServerActivity uses the listener to create new mpQUIC session
+// 1. Receive Request Data
+// 2. Perform Requested Action
+// ==> 2.1 Send File List to client
+// ==> 2.2 Send File
+func performServerActivity(session quic.Session) {
+	var err error
+	// 1. Receive Request Data
+	dataReceived := common.ReadDataWithQUIC(session)
+	requestData := strings.Split(dataReceived, ",")
+
+	// 2. Perform Requested Action
+	if requestData[0] == "1" {
+		// 2.1 Send File List to client
+		files, err := ioutil.ReadDir(constants.SERVER_STORAGE_DIR + "/")
+		if err != nil {
+			log.Fatal("Error Listing Directory: ", err.Error())
 		}
 
-		receivedData := ""
-		for {
-			data, readLen := receiveData(session)
-			if readLen > 0 {
-				fmt.Println(readLen, "\nData received:\n", string(data))
-				receivedData += string(data[:readLen])
-			} else {
-				break
+		var fileNameList []string
+		for _, f := range files {
+			if f.Name() == ".gitkeep" {
+				continue
 			}
+			fileNameList = append(fileNameList, f.Name())
 		}
-		_ = session.Close(err)
 
-		if receivedData != "" {
-			file, err := os.Create(constants.SERVER_STORAGE_DIR + "/" + time.Now().String() + ".txt")
-			if err != nil {
-				fmt.Println(err)
-			} else {
-				_, _ = file.WriteString(receivedData)
-				fmt.Println("Done")
-			}
-			_ = file.Close()
+		common.SendStringWithQUIC(session, strings.Join(fileNameList, ","))
+	} else {
+		// 2.2 Send File
+		err = common.SendFileWithQUIC(session, constants.SERVER_STORAGE_DIR+"/"+requestData[1])
+		if err != nil {
+			log.Fatal("Error Sending the file: ", err.Error())
 		}
-		fmt.Println("File Upload Completed, File was saved Successfully \n Server is Ready!!!")
+	}
+	_ = session.Close(err)
+}
+
+func initializeServerArguments() *quic.Config {
+	if os.Getenv(constants.SCHEDULER_OUTPUT_DIR) == "" {
+		panic("`outputDir` Env variable not found")
+	}
+
+	weightsFile := flag.String(constants.TRAIN_WEIGHTS_FILE_PARAM, "", "Path to weights file, a string, used only for ML based scheduler")
+	scheduler := flag.String(constants.SCHEDULER_PARAM, mpqConstants.SCHEDULER_ROUND_ROBIN, "Scheduler Name, a string")
+	createPaths := flag.Bool(constants.CREATE_PATHS_PARAM, true, "a bool(true, false), default: true")
+	train := flag.Bool(constants.TRAINING_PARAMS, false, "a bool(true, false), default: false")
+	dumpExperiences := flag.Bool(constants.DUMP_EXPERIENCES_PARAM, false, "a bool(true, false), default: false")
+	epsilon := flag.Float64(constants.EPSILON_PARAM, 0, "a float64, default: 0 for epsilon value")
+	allowedCongestion := flag.Int(constants.ALLOWED_CONGESTION_PARAM, 10, "a Int, default: 10")
+	flag.Parse()
+
+	return &quic.Config{
+		WeightsFile:       *weightsFile,
+		Scheduler:         *scheduler,
+		CreatePaths:       *createPaths,
+		Training:          *train,
+		DumpExperiences:   *dumpExperiences,
+		Epsilon:           *epsilon,
+		AllowedCongestion: *allowedCongestion,
 	}
 }

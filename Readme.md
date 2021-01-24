@@ -10,19 +10,21 @@ You are expected to have access to [MPQUIC Stand Alone Package](https://github.c
 
 Go Required: _1.12 +_
 
+## Pre-Requisites
+- Follow all requirements mentioned in [MPQUIC Repo](https://github.com/SHARANTANGEDA/mp-quic)
+
 ## Enable environment variable: 
-- `export GOPRIVATE=github.com/SHARANTANGEDA/mp-quic`
-- `export outputDir=PATH_TO_OUTPUT_DIR`
+- Check out the sample for env variables needed
 
 Sync dependencies after enabling the environment variable
 
 ##### Server Run
 - `go build server.go`
-- `./server --scheduler=round_robin --train=false --eps=0.01 --dump_exp=false --create_paths=true`
+- `./server --scheduler=round_robin --eps=0.01 --dump_exp=false `
 
 ##### Client Run
 - `cd client && go build client.go`
-- `./client --scheduler=round_robin --action=2 --create_paths=true --file_name=hello.txt`
+- `./client --scheduler=round_robin --action=2 --file_name=hello.txt`
 ### *Note: Two values of action are possible 1, 2*
 
 ### List of Available Schedulers

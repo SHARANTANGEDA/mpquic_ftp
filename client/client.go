@@ -16,9 +16,9 @@ import (
 )
 
 func main() {
-	action, fileName, cfgClient := initializeClientArguments()
+	serverPort, serverIp, action, fileName, cfgClient := initializeClientArguments()
 	tlsConfig := &tls.Config{InsecureSkipVerify: true}
-	session, err := quic.DialAddr(constants.SERVER_PUBLIC_ADDRESS+":"+constants.SERVER_PORT, tlsConfig, cfgClient)
+	session, err := quic.DialAddr(serverIp+":"+serverPort, tlsConfig, cfgClient)
 	if err != nil {
 		log.Fatal("Error connecting to server: ", err.Error())
 	}
@@ -45,18 +45,25 @@ func main() {
 	_ = session.Close(err)
 }
 
-func initializeClientArguments() (string, string, *quic.Config) {
+func initializeClientArguments() (string, string, string, string, *quic.Config) {
 	if os.Getenv(constants.SCHEDULER_OUTPUT_DIR) == "" {
-		panic("`outputDir` Env variable not found")
+		panic("`OUTPUT_DIR` Env variable not found")
+	}
+	serverIp := os.Getenv(constants.SERVER_IP_ADDRESS)
+	if serverIp == "" {
+		panic("`SERVER_IP` Env variable not found")
+	}
+	serverPort := os.Getenv(constants.SERVER_PORT)
+	if serverPort == "" {
+		panic("`SERVER_PORT` Env variable not found")
 	}
 
-	weightsFile := flag.String(constants.TRAIN_WEIGHTS_FILE_PARAM, "", "Path to weights file, a string, used only for ML based scheduler")
+	weightsFile := os.Getenv(constants.TRAIN_WEIGHTS_FILE_PARAM)
+	if weightsFile == "" {
+		panic("`WEIGHTS_FILE_PATH` Env variable not found")
+	}
+
 	scheduler := flag.String(constants.SCHEDULER_PARAM, mpqConstants.SCHEDULER_ROUND_ROBIN, "Scheduler Name, a string")
-	createPaths := flag.Bool(constants.CREATE_PATHS_PARAM, true, "a bool(true, false), default: true")
-	train := flag.Bool(constants.TRAINING_PARAMS, false, "a bool(true, false), default: false")
-	dumpExperiences := flag.Bool(constants.DUMP_EXPERIENCES_PARAM, false, "a bool(true, false), default: false")
-	epsilon := flag.Float64(constants.EPSILON_PARAM, 0, "a float64, default: 0 for epsilon value")
-	allowedCongestion := flag.Int(constants.ALLOWED_CONGESTION_PARAM, 10, "a Int, default: 10")
 	action := flag.String(constants.ACTION_PARAM, "1", "1: To Get FileList, 2: Get the file, Default: 1")
 	fileName := flag.String(constants.UPLOAD_FILE_PARAM, "", "Mention the fileName, when action is 2 (Required")
 	flag.Parse()
@@ -68,13 +75,10 @@ func initializeClientArguments() (string, string, *quic.Config) {
 		log.Fatal("Action 2 requires file_name, please choose file_name")
 	}
 
-	return *action, *fileName, &quic.Config{
-		WeightsFile:       *weightsFile,
-		Scheduler:         *scheduler,
-		CreatePaths:       *createPaths,
-		Training:          *train,
-		DumpExperiences:   *dumpExperiences,
-		Epsilon:           *epsilon,
-		AllowedCongestion: *allowedCongestion,
+	return serverPort, serverIp, *action, *fileName, &quic.Config{
+		WeightsFile: weightsFile,
+		Scheduler:   *scheduler,
+		CreatePaths: true,
+		Training:    true,
 	}
 }

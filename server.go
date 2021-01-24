@@ -16,8 +16,8 @@ import (
 )
 
 func main() {
-	cfgServer := initializeServerArguments()
-	serverAddr := constants.SERVER_HOST + ":" + constants.SERVER_PORT
+	serverPort, cfgServer := initializeServerArguments()
+	serverAddr := constants.SERVER_HOST + ":" + serverPort
 	tlsConfig := common.GenerateTLSConfig()
 	listener, err := quic.ListenAddr(serverAddr, tlsConfig, cfgServer)
 	if err != nil {
@@ -76,25 +76,31 @@ func performServerActivity(session quic.Session) {
 	_ = session.Close(err)
 }
 
-func initializeServerArguments() *quic.Config {
+func initializeServerArguments() (string, *quic.Config) {
 	if os.Getenv(constants.SCHEDULER_OUTPUT_DIR) == "" {
 		panic("`outputDir` Env variable not found")
 	}
 
-	weightsFile := flag.String(constants.TRAIN_WEIGHTS_FILE_PARAM, "", "Path to weights file, a string, used only for ML based scheduler")
+	serverPort := os.Getenv(constants.SERVER_PORT)
+	if serverPort == "" {
+		panic("`SERVER_PORT` Env variable not found")
+	}
+	weightsFile := os.Getenv(constants.TRAIN_WEIGHTS_FILE_PARAM)
+	if weightsFile == "" {
+		panic("`WEIGHTS_FILE_PATH` Env variable not found")
+	}
+
 	scheduler := flag.String(constants.SCHEDULER_PARAM, mpqConstants.SCHEDULER_ROUND_ROBIN, "Scheduler Name, a string")
-	createPaths := flag.Bool(constants.CREATE_PATHS_PARAM, true, "a bool(true, false), default: true")
-	train := flag.Bool(constants.TRAINING_PARAMS, false, "a bool(true, false), default: false")
 	dumpExperiences := flag.Bool(constants.DUMP_EXPERIENCES_PARAM, false, "a bool(true, false), default: false")
-	epsilon := flag.Float64(constants.EPSILON_PARAM, 0, "a float64, default: 0 for epsilon value")
+	epsilon := flag.Float64(constants.EPSILON_PARAM, 0.01, "a float64, default: 0 for epsilon value")
 	allowedCongestion := flag.Int(constants.ALLOWED_CONGESTION_PARAM, 10, "a Int, default: 10")
 	flag.Parse()
 
-	return &quic.Config{
-		WeightsFile:       *weightsFile,
+	return serverPort, &quic.Config{
+		WeightsFile:       weightsFile,
 		Scheduler:         *scheduler,
-		CreatePaths:       *createPaths,
-		Training:          *train,
+		CreatePaths:       true,
+		Training:          true,
 		DumpExperiences:   *dumpExperiences,
 		Epsilon:           *epsilon,
 		AllowedCongestion: *allowedCongestion,

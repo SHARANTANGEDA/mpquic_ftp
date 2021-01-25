@@ -40,14 +40,15 @@ func main() {
 		common.SendStringWithQUIC(session, action+","+fileName)
 
 		// Receive File
-		common.StoreFile(fileName, constants.CLIENT_STORAGE_DIR, common.ReadDataWithQUIC(session))
+		common.StoreFile(fileName, os.Getenv(constants.PROJECT_HOME_DIR)+"/"+constants.CLIENT_STORAGE_DIR,
+			common.ReadDataWithQUIC(session))
 	}
 	_ = session.Close(err)
 }
 
 func initializeClientArguments() (string, string, string, string, *quic.Config) {
-	if os.Getenv(constants.SCHEDULER_OUTPUT_DIR) == "" {
-		panic("`OUTPUT_DIR` Env variable not found")
+	if os.Getenv(constants.PROJECT_HOME_DIR) == "" {
+		panic("`PROJECT_HOME_DIR` Env variable not found")
 	}
 	serverIp := os.Getenv(constants.SERVER_IP_ADDRESS)
 	if serverIp == "" {

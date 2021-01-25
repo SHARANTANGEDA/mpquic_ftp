@@ -52,7 +52,7 @@ func performServerActivity(session quic.Session) {
 	// 2. Perform Requested Action
 	if requestData[0] == "1" {
 		// 2.1 Send File List to client
-		files, err := ioutil.ReadDir(constants.SERVER_STORAGE_DIR + "/")
+		files, err := ioutil.ReadDir(os.Getenv(constants.PROJECT_HOME_DIR) + "/" + constants.SERVER_STORAGE_DIR + "/")
 		if err != nil {
 			log.Fatal("Error Listing Directory: ", err.Error())
 		}
@@ -68,7 +68,8 @@ func performServerActivity(session quic.Session) {
 		common.SendStringWithQUIC(session, strings.Join(fileNameList, ","))
 	} else {
 		// 2.2 Send File
-		err = common.SendFileWithQUIC(session, constants.SERVER_STORAGE_DIR+"/"+requestData[1])
+		err = common.SendFileWithQUIC(session, os.Getenv(constants.PROJECT_HOME_DIR)+"/"+
+			constants.SERVER_STORAGE_DIR+"/"+requestData[1])
 		if err != nil {
 			log.Fatal("Error Sending the file: ", err.Error())
 		}
@@ -77,8 +78,8 @@ func performServerActivity(session quic.Session) {
 }
 
 func initializeServerArguments() (string, *quic.Config) {
-	if os.Getenv(constants.SCHEDULER_OUTPUT_DIR) == "" {
-		panic("`outputDir` Env variable not found")
+	if os.Getenv(constants.PROJECT_HOME_DIR) == "" {
+		panic("`PROJECT_HOME_DIR` Env variable not found")
 	}
 
 	serverPort := os.Getenv(constants.SERVER_PORT)

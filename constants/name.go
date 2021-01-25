@@ -2,7 +2,7 @@ package constants
 
 const (
 	// Environment Variables
-	SCHEDULER_OUTPUT_DIR     = "OUTPUT_DIR"
+	PROJECT_HOME_DIR         = "PROJECT_HOME_DIR"
 	SERVER_IP_ADDRESS        = "SERVER_IP"
 	SERVER_PORT              = "SERVER_PORT"
 	TRAIN_WEIGHTS_FILE_PARAM = "WEIGHTS_FILE_PATH"

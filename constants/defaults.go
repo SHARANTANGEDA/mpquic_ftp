@@ -7,10 +7,7 @@ const (
 	CLIENT_STORAGE_DIR = "client_store"
 
 	// Client
-	MAX_PACKET_CONTENT_SIZE = 500
+	MAX_PACKET_CONTENT_SIZE = 9999900
 
-	QUERY_PARAM_NO  = "0"
-	QUERY_PARAM_YES = "1"
-
-	DEFAULT_ALLOWED_CONGESTION = 10
+	CLOSE_SERVER_GREETING = "Got the file!!, Thank you server, goodbye."
 )

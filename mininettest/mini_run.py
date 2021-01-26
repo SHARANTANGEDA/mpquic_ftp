@@ -1,10 +1,11 @@
 #!/usr/bin/python
-from mininet.cli import CLI
-from mininet.topo import Topo
-from mininet.net import Mininet
-from mininet.log import setLogLevel
-from mininet.node import OVSBridge
+import argparse
 
+from mininet.cli import CLI
+from mininet.log import setLogLevel
+from mininet.net import Mininet
+from mininet.node import OVSBridge
+from mininet.topo import Topo
 
 BASIC_DELAY = 40
 
@@ -18,7 +19,7 @@ class DoubleConnTopo(Topo):
         self.addLink(s1, server)
 
 
-def setup_environment():
+def setup_environment(client_delay, switch_delay):
     net = Mininet(topo=DoubleConnTopo(), switch=OVSBridge, controller=None)
     server = net.get("server")
     client = net.get("client")
@@ -29,22 +30,27 @@ def setup_environment():
     client.setIP("10.0.0.2", intf="client-eth1")
 
     client.cmd("./scripts/routing.sh")
-    client.cmd("./scripts/tc_client.sh")
-    s1.cmd("./scripts/tc_s1.sh")
+    if client_delay:
+        client.cmd("./scripts/tc_client.sh")
+    if switch_delay:
+        s1.cmd("./scripts/tc_s1.sh")
+
     net.start()
 
     return net
 
 
-def run_experiment():
-    net = setup_environment()
+def run_experiment(client_delay, switch_delay):
+    net = setup_environment(client_delay, switch_delay)
 
     server = net.get('server')
     client = net.get('client')
     s1 = net.get("s1")
 
-    s1.cmd("./scripts/set_delay.sh %d" % int(BASIC_DELAY / 2))
-    client.cmd("./scripts/client_set_delay.sh %d" % int(BASIC_DELAY / 2))
+    if switch_delay:
+        s1.cmd("./scripts/set_delay.sh %d" % int(BASIC_DELAY / 2))
+    if client_delay:
+        client.cmd("./scripts/client_set_delay.sh %d" % int(BASIC_DELAY / 2))
 
     # you may want to start wireshark here and finish by typing exit
     cli = CLI(net)
@@ -57,7 +63,12 @@ def run_experiment():
 
 if __name__ == '__main__':
     setLogLevel('warning')
-    run_experiment()
+    parser = argparse.ArgumentParser(description='Execute with defined Delay')
+    parser.add_argument('--add_client_delay', type=bool, dest="client_delay", help="Set Client Delay", default=False)
+    parser.add_argument('--add_switch_delay', type=bool, dest="switch_delay", help="Set Switch Delay", default=False)
+
+    args = parser.parse_args()
+    run_experiment(args.client_delay, args.switch_delay)
 
 
 class StaticTopo(Topo):

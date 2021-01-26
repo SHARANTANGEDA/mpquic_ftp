@@ -73,6 +73,9 @@ func performServerActivity(session quic.Session) {
 		if err != nil {
 			log.Fatal("Error Sending the file: ", err.Error())
 		}
+
+		// Send Ack after file transfer
+		common.ReadDataWithQUIC(session)
 	}
 	_ = session.Close(err)
 }
@@ -94,7 +97,7 @@ func initializeServerArguments() (string, *quic.Config) {
 	scheduler := flag.String(constants.SCHEDULER_PARAM, mpqConstants.SCHEDULER_ROUND_ROBIN, "Scheduler Name, a string")
 	dumpExperiences := flag.Bool(constants.DUMP_EXPERIENCES_PARAM, false, "a bool(true, false), default: false")
 	epsilon := flag.Float64(constants.EPSILON_PARAM, 0.01, "a float64, default: 0 for epsilon value")
-	allowedCongestion := flag.Int(constants.ALLOWED_CONGESTION_PARAM, 10, "a Int, default: 10")
+	allowedCongestion := flag.Int(constants.ALLOWED_CONGESTION_PARAM, 2500, "a Int, default: 2500")
 	flag.Parse()
 
 	return serverPort, &quic.Config{

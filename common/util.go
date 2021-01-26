@@ -42,27 +42,10 @@ func WriteBytesWithQUIC(session quic.Session, bytesToSend []byte) {
 	if err != nil {
 		log.Fatal("Error Opening Write Stream: ", err)
 	}
-	byteCnt := len(bytesToSend)
-	byteTracker := 0
-	for {
-		if byteCnt-byteTracker > constants.MAX_PACKET_CONTENT_SIZE {
-			_, err = stream.Write(bytesToSend[byteTracker : byteTracker+constants.MAX_PACKET_CONTENT_SIZE])
-			byteTracker += constants.MAX_PACKET_CONTENT_SIZE
-			if err != nil {
-				fmt.Println("Error in Sending:", err)
-			}
-		} else {
-			_, err = stream.Write(bytesToSend[byteTracker:byteCnt])
-			if err != nil {
-				fmt.Println("Error in Sending:", err)
-			}
-			break
-		}
-		if err == io.EOF {
-			fmt.Println("End of file Reached")
-			break
-		}
-	}
+	println("Send length: ", len(string(bytesToSend)))
+	sentBytes, _ := stream.Write(bytesToSend)
+	byteCount, _ := stream.GetBytesSent()
+	fmt.Println("Sent Bytes: ", byteCount, sentBytes)
 	_ = stream.Close()
 }
 
@@ -84,27 +67,28 @@ func ReadDataWithQUIC(session quic.Session) string {
 	receivedData := ""
 	stream, err := session.AcceptStream()
 	if err != nil {
-		fmt.Println("Data received: ", receivedData)
-		return receivedData // Data Transfer is done
+		fmt.Println("Data received: ", len(receivedData))
+		return receivedData
 	}
 	for {
 		// Make a buffer to hold incoming data.
-		buf := make([]byte, 512)
+		buf := make([]byte, constants.MAX_PACKET_CONTENT_SIZE)
 		// Read the incoming connection into the buffer.
 		readLen, err := stream.Read(buf)
 		if readLen > 0 {
 			receivedData += string(buf[:readLen])
-		} else {
-			break
 		}
 		if err != nil {
-			if err.Error() == "EOF" {
+			if err == io.EOF {
+				break // Data Transfer is done
+			} else if err.Error() == "PeerGoingAway: " {
+				log.Println("Error in Reading: ", err.Error())
 				break
 			}
 			log.Fatal("Error reading: ", err.Error(), readLen)
 		}
 	}
-	fmt.Println("Data received: ", receivedData)
+	fmt.Println("Data received: ", len(receivedData))
 	_ = stream.Close()
 	return receivedData
 }

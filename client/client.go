@@ -42,6 +42,9 @@ func main() {
 		// Receive File
 		common.StoreFile(fileName, os.Getenv(constants.PROJECT_HOME_DIR)+"/"+constants.CLIENT_STORAGE_DIR,
 			common.ReadDataWithQUIC(session))
+
+		// Send Ack after file transfer
+		common.SendStringWithQUIC(session, constants.CLOSE_SERVER_GREETING)
 	}
 	_ = session.Close(err)
 }

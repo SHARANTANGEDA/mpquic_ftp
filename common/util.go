@@ -15,6 +15,7 @@ import (
 	"log"
 	"math/big"
 	"os"
+	"time"
 )
 
 func GenerateTLSConfig() *tls.Config {
@@ -42,10 +43,8 @@ func WriteBytesWithQUIC(session quic.Session, bytesToSend []byte) {
 	if err != nil {
 		log.Fatal("Error Opening Write Stream: ", err)
 	}
-	println("Send length: ", len(string(bytesToSend)))
 	sentBytes, _ := stream.Write(bytesToSend)
-	byteCount, _ := stream.GetBytesSent()
-	fmt.Println("Sent Bytes: ", byteCount, sentBytes)
+	fmt.Println("Sent Bytes: ", sentBytes)
 	_ = stream.Close()
 }
 
@@ -55,15 +54,18 @@ func SendStringWithQUIC(session quic.Session, message string) {
 }
 
 func SendFileWithQUIC(session quic.Session, filePath string) error {
+	logStartTime := time.Now()
 	fileBytes, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return fmt.Errorf("file Not Found: %v", err.Error())
 	}
 	WriteBytesWithQUIC(session, fileBytes)
+	fmt.Printf("Time Taken to Send File: %f sec\n", time.Now().Sub(logStartTime).Seconds())
 	return nil
 }
 
 func ReadDataWithQUIC(session quic.Session) string {
+	logStartTime := time.Now()
 	receivedData := ""
 	stream, err := session.AcceptStream()
 	if err != nil {
@@ -88,7 +90,8 @@ func ReadDataWithQUIC(session quic.Session) string {
 			log.Fatal("Error reading: ", err.Error(), readLen)
 		}
 	}
-	fmt.Println("Data received: ", len(receivedData))
+	fmt.Printf("Data received: %d \t|| Time Taken To Download File: %f sec\n", len(receivedData),
+		time.Now().Sub(logStartTime).Seconds())
 	_ = stream.Close()
 	return receivedData
 }

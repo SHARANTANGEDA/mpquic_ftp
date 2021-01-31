@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import argparse
+import os
 
 from mininet.cli import CLI
 from mininet.log import setLogLevel
@@ -8,6 +9,7 @@ from mininet.node import OVSBridge
 from mininet.topo import Topo
 
 BASIC_DELAY = 40
+
 
 class DoubleConnTopo(Topo):
     def build(self):
@@ -30,6 +32,9 @@ def setup_environment(client_delay, switch_delay):
     client.setIP("10.0.0.2", intf="client-eth1")
 
     client.cmd("./scripts/routing.sh")
+    routing_script_path = os.path.join(project_home_dir, "mininettest/scripts/routing.sh")
+    client.cmd(f'chmod +x {routing_script_path}')
+    client.cmd(f'bash {routing_script_path}')
     if client_delay:
         client.cmd("./scripts/tc_client.sh")
     if switch_delay:
@@ -47,12 +52,16 @@ def run_experiment(client_delay, switch_delay):
     client = net.get('client')
     s1 = net.get("s1")
 
-    if switch_delay:
-        s1.cmd("./scripts/set_delay.sh %d" % int(BASIC_DELAY / 2))
-    if client_delay:
-        client.cmd("./scripts/client_set_delay.sh %d" % int(BASIC_DELAY / 2))
+    if switch_delay and project_home_dir != ".":
+        delay_file_path = os.path.join(project_home_dir, "mininettest/scripts/set_delay.sh")
+        s1.cmd("chmod +x " + delay_file_path)
+        s1.cmd(f'{delay_file_path} {int(BASIC_DELAY / 2)}')
+    if client_delay and project_home_dir != ".":
+        client_delay_file_path = os.path.join(project_home_dir, "mininettest/scripts/client_set_delay.sh")
+        client.cmd(f'chmod +x {client_delay_file_path}')
+        client.cmd(f'{client_delay_file_path} {int(BASIC_DELAY / 2)}')
 
-    # you may want to start wireshark here and finish by typing exit
+    # you may want to start wireshark here and press exit to continue
     cli = CLI(net)
 
     CLI.do_xterm(cli, 'server client')
@@ -68,6 +77,7 @@ if __name__ == '__main__':
     parser.add_argument('--add_switch_delay', type=bool, dest="switch_delay", help="Set Switch Delay", default=False)
 
     args = parser.parse_args()
+    project_home_dir = os.getenv("PROJECT_HOME_DIR", ".")
     run_experiment(args.client_delay, args.switch_delay)
 
 

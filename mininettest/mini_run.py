@@ -31,10 +31,9 @@ def setup_environment(client_delay, switch_delay):
     client.setIP("10.0.0.1", intf="client-eth0")
     client.setIP("10.0.0.2", intf="client-eth1")
 
-    client.cmd("./scripts/routing.sh")
     routing_script_path = os.path.join(project_home_dir, "mininettest/scripts/routing.sh")
-    client.cmd(f'chmod +x {routing_script_path}')
-    client.cmd(f'bash {routing_script_path}')
+    client.cmd("chmod +x " + routing_script_path)
+    client.cmd("bash " + routing_script_path)
     if client_delay:
         client.cmd("./scripts/tc_client.sh")
     if switch_delay:
@@ -55,11 +54,11 @@ def run_experiment(client_delay, switch_delay):
     if switch_delay and project_home_dir != ".":
         delay_file_path = os.path.join(project_home_dir, "mininettest/scripts/set_delay.sh")
         s1.cmd("chmod +x " + delay_file_path)
-        s1.cmd(f'{delay_file_path} {int(BASIC_DELAY / 2)}')
+        s1.cmd("bash " + delay_file_path + " %d" % int(BASIC_DELAY / 2))
     if client_delay and project_home_dir != ".":
         client_delay_file_path = os.path.join(project_home_dir, "mininettest/scripts/client_set_delay.sh")
-        client.cmd(f'chmod +x {client_delay_file_path}')
-        client.cmd(f'{client_delay_file_path} {int(BASIC_DELAY / 2)}')
+        client.cmd("chmod +x " + client_delay_file_path)
+        client.cmd("bash " + client_delay_file_path + " %d" % int(BASIC_DELAY / 2))
 
     # you may want to start wireshark here and press exit to continue
     cli = CLI(net)
@@ -81,6 +80,7 @@ if __name__ == '__main__':
     run_experiment(args.client_delay, args.switch_delay)
 
 
+# Unused
 class StaticTopo(Topo):
     def build(self):
         h1 = self.addHost('h1')

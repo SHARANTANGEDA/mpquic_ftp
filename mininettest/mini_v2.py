@@ -3,6 +3,7 @@ import argparse
 import os
 
 from mininet.cli import CLI
+from mininet.link import TCLink
 from mininet.log import setLogLevel
 from mininet.net import Mininet
 from mininet.node import OVSBridge
@@ -16,13 +17,13 @@ class DoubleConnTopo(Topo):
         client = self.addHost("client")
         server = self.addHost("server")
         s1 = self.addSwitch('s1')
-        self.addLink(s1, client, bw=client_path_1_bw)
-        self.addLink(s1, client, bw=client_path_2_bw)
-        self.addLink(s1, server)
+        self.addLink(s1, client, bw=client_path_1_bw, cls=TCLink)
+        self.addLink(s1, client, bw=client_path_2_bw, cls=TCLink)
+        self.addLink(s1, server, cls=TCLink)
 
 
 def setup_environment(client_delay, switch_delay):
-    net = Mininet(topo=DoubleConnTopo(), switch=OVSBridge, controller=None)
+    net = Mininet(topo=DoubleConnTopo(), switch=OVSBridge, controller=None, link=TCLink)
     server = net.get("server")
     client = net.get("client")
     s1 = net.get("s1")
@@ -38,12 +39,6 @@ def setup_environment(client_delay, switch_delay):
         client.cmd("./scripts/tc_client.sh")
     if switch_delay:
         s1.cmd("./scripts/tc_s1.sh")
-
-    # Setup Mininet Env
-    # TODO: Expose Error when the file is not present
-    env_variables_cmd = "set -a && source " + os.path.join(project_home_dir, "envs/mininet.env") + " && set +a"
-    client.cmd(env_variables_cmd)
-    server.cmd(env_variables_cmd)
 
     net.start()
 
@@ -65,6 +60,12 @@ def run_experiment(client_delay, switch_delay):
         client_delay_file_path = os.path.join(project_home_dir, "mininettest/scripts/client_set_delay.sh")
         client.cmd("chmod +x " + client_delay_file_path)
         client.cmd("bash " + client_delay_file_path + " %d" % int(BASIC_DELAY / 2))
+
+    # Setup Mininet Env
+    # TODO: Expose Error when the file is not present
+    env_variables_cmd = "set -a && source " + os.path.join(project_home_dir, "envs/mininet.env") + " && set +a"
+    client.cmd(env_variables_cmd)
+    server.cmd(env_variables_cmd)
 
     # you may want to start wireshark here and press exit to continue
     cli = CLI(net)

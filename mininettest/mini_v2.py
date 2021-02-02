@@ -16,8 +16,8 @@ class DoubleConnTopo(Topo):
         client = self.addHost("client")
         server = self.addHost("server")
         s1 = self.addSwitch('s1')
-        self.addLink(s1, client)
-        self.addLink(s1, client)
+        self.addLink(s1, client, bw=client_path_1_bw)
+        self.addLink(s1, client, bw=client_path_2_bw)
         self.addLink(s1, server)
 
 
@@ -39,6 +39,8 @@ def setup_environment(client_delay, switch_delay):
     if switch_delay:
         s1.cmd("./scripts/tc_s1.sh")
 
+    # Setup Mininet Env
+    # TODO: Expose Error when the file is not present
     env_variables_cmd = "set -a && source " + os.path.join(project_home_dir, "envs/mininet.env") + " && set +a"
     client.cmd(env_variables_cmd)
     server.cmd(env_variables_cmd)
@@ -75,23 +77,16 @@ def run_experiment(client_delay, switch_delay):
 
 if __name__ == '__main__':
     setLogLevel('warning')
-    parser = argparse.ArgumentParser(description='Execute with defined Delay')
+    parser = argparse.ArgumentParser(description='Execute with Defined Bandwidth for path-1 and path-2')
     parser.add_argument('--add_client_delay', type=bool, dest="client_delay", help="Set Client Delay", default=False)
     parser.add_argument('--add_switch_delay', type=bool, dest="switch_delay", help="Set Switch Delay", default=False)
+    parser.add_argument('--path_1_bw', type=int, dest="path_1_bw", help="Set Bandwidth for client path 1",
+                        default=10)
+    parser.add_argument('--path_2_bw', type=int, dest="path_2_bw", help="Set Bandwidth for client path 2",
+                        default=10)
 
     args = parser.parse_args()
     project_home_dir = os.getenv("PROJECT_HOME_DIR", ".")
+    client_path_1_bw, client_path_2_bw = args.path_1_bw, args.path_2_bw
     run_experiment(args.client_delay, args.switch_delay)
 
-
-# Unused
-class StaticTopo(Topo):
-    def build(self):
-        h1 = self.addHost('h1')
-        h2 = self.addHost('h2')
-        s1 = self.addSwitch('s1')
-        s2 = self.addSwitch('s2')
-        self.addLink(h1, s1, bw=100, delay="40ms")
-        self.addLink(h2, s1, bw=100)
-        self.addLink(h1, s2, bw=100, delay="20ms")
-        self.addLink(h2, s2, bw=100)

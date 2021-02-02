@@ -17,9 +17,10 @@ class DoubleConnTopo(Topo):
         client = self.addHost("client")
         server = self.addHost("server")
         s1 = self.addSwitch('s1')
+        print("Client Max-bandwidth: ", client_path_1_bw, client_path_2_bw)
         self.addLink(s1, client, bw=client_path_1_bw, cls=TCLink)
         self.addLink(s1, client, bw=client_path_2_bw, cls=TCLink)
-        self.addLink(s1, server, cls=TCLink)
+        self.addLink(s1, server, bw=(client_path_1_bw+client_path_2_bw), cls=TCLink)
 
 
 def setup_environment(client_delay, switch_delay):

@@ -38,40 +38,42 @@ func GenerateTLSConfig() *tls.Config {
 	return &tls.Config{Certificates: []tls.Certificate{tlsCert}}
 }
 
-func WriteBytesWithQUIC(session quic.Session, bytesToSend []byte) {
+func WriteBytesWithQUIC(session quic.Session, bytesToSend []byte, logTime bool) {
 	stream, err := session.OpenStreamSync()
+	logStartTime := time.Now()
 	if err != nil {
 		log.Fatal("Error Opening Write Stream: ", err)
 	}
 	sentBytes, _ := stream.Write(bytesToSend)
 	fmt.Println("Sent Bytes: ", sentBytes)
+	if logTime {
+		fmt.Printf("Time Taken to Send File: %f sec\n", time.Now().Sub(logStartTime).Seconds())
+	}
 	_ = stream.Close()
 }
 
 func SendStringWithQUIC(session quic.Session, message string) {
 	bytesToSend := []byte(message)
-	WriteBytesWithQUIC(session, bytesToSend)
+	WriteBytesWithQUIC(session, bytesToSend, false)
 }
 
 func SendFileWithQUIC(session quic.Session, filePath string) error {
-	logStartTime := time.Now()
 	fileBytes, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return fmt.Errorf("file Not Found: %v", err.Error())
 	}
-	WriteBytesWithQUIC(session, fileBytes)
-	fmt.Printf("Time Taken to Send File: %f sec\n", time.Now().Sub(logStartTime).Seconds())
+	WriteBytesWithQUIC(session, fileBytes, true)
 	return nil
 }
 
 func ReadDataWithQUIC(session quic.Session) string {
-	logStartTime := time.Now()
 	receivedData := ""
 	stream, err := session.AcceptStream()
 	if err != nil {
 		fmt.Println("Data received: ", len(receivedData))
 		return receivedData
 	}
+	logStartTime := time.Now()
 	for {
 		// Make a buffer to hold incoming data.
 		buf := make([]byte, constants.MAX_PACKET_CONTENT_SIZE)
@@ -84,8 +86,7 @@ func ReadDataWithQUIC(session quic.Session) string {
 			if err == io.EOF {
 				break // Data Transfer is done
 			} else if err.Error() == "PeerGoingAway: " {
-				log.Println("Error in Reading: ", err.Error())
-				break
+				continue
 			}
 			log.Fatal("Error reading: ", err.Error(), readLen)
 		}

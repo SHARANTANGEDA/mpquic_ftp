@@ -60,7 +60,7 @@ func SendStringWithQUIC(session quic.Session, message string) {
 func SendFileWithQUIC(session quic.Session, filePath string) error {
 	fileBytes, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		return fmt.Errorf("file Not Found: %v", err.Error())
+		return fmt.Errorf("file not found: %v", err.Error())
 	}
 	WriteBytesWithQUIC(session, fileBytes, true)
 	return nil
@@ -99,7 +99,7 @@ func ReadDataWithQUIC(session quic.Session) string {
 
 func StoreFile(fileName, dirPath, fileData string) {
 	if fileData == "" {
-		log.Fatal("File Can't be empty")
+		log.Fatal("Error: [FILE_DOWNLOAD] File doesn't exist or is empty")
 	}
 	uniqueId, err := shortid.Generate()
 	file, err := os.Create(dirPath + "/" + uniqueId + "_" + fileName)

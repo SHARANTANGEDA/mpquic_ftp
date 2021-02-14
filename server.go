@@ -71,7 +71,9 @@ func performServerActivity(session quic.Session) {
 		err = common.SendFileWithQUIC(session, os.Getenv(constants.PROJECT_HOME_DIR)+"/"+
 			constants.SERVER_STORAGE_DIR+"/"+requestData[1])
 		if err != nil {
-			log.Fatal("Error Sending the file: ", err.Error())
+			fmt.Println("Error Sending the file: ", err.Error())
+			_ = session.Close(err)
+			return
 		}
 
 		// Send Ack after file transfer

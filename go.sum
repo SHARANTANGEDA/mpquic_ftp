@@ -16,6 +16,8 @@ github.com/SHARANTANGEDA/mp-quic v1.5.2-0.20210217021007-acb0a8c1cb99 h1:OAsvcGt
 github.com/SHARANTANGEDA/mp-quic v1.5.2-0.20210217021007-acb0a8c1cb99/go.mod h1:2hwn72DRaqVhuEhZ0G+uKFv38oGOwMBJh8mU6PolU/8=
 github.com/SHARANTANGEDA/mp-quic v1.5.2-0.20210220050512-ba5e0eb9012d h1:UDi710P2MXUiq+KLmpkaawrb7O/h7u5DTL9aTE7Uj+I=
 github.com/SHARANTANGEDA/mp-quic v1.5.2-0.20210220050512-ba5e0eb9012d/go.mod h1:2hwn72DRaqVhuEhZ0G+uKFv38oGOwMBJh8mU6PolU/8=
+github.com/SHARANTANGEDA/mp-quic v1.5.2-0.20210220052112-59df7bb73c77 h1:lnuQcyBCP68kyjJEwjOKYB+4Gmm32cdQtOvlz85m0c8=
+github.com/SHARANTANGEDA/mp-quic v1.5.2-0.20210220052112-59df7bb73c77/go.mod h1:2hwn72DRaqVhuEhZ0G+uKFv38oGOwMBJh8mU6PolU/8=
 github.com/Workiva/go-datastructures v1.0.52 h1:PLSK6pwn8mYdaoaCZEMsXBpBotr4HHn9abU0yMQt0NI=
 github.com/Workiva/go-datastructures v1.0.52/go.mod h1:Z+F2Rca0qCsVYDS8z7bAGm8f3UkzuWYS/oBZz5a7VVA=
 github.com/ajstarks/svgo v0.0.0-20180226025133-644b8db467af/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=

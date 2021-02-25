@@ -8,9 +8,14 @@ const (
 	TRAIN_WEIGHTS_FILE_PARAM = "WEIGHTS_FILE_PATH"
 
 	SCHEDULER_PARAM          = "scheduler"          // Expect String (Optional)
-	UPLOAD_FILE_PARAM        = "file_name"          // Expect String
+	DOWNLOAD_FILE_PARAM      = "file_name"          // Expect String
+	UPLOAD_FILE_PATH_PARAM   = "file_path"          // Absolute path as String
 	ACTION_PARAM             = "action"             // Expect Int
 	EPSILON_PARAM            = "eps"                // Expect Float (Optional)
 	ALLOWED_CONGESTION_PARAM = "allowed_congestion" // Expect +ve Int (Optional)
 	DUMP_EXPERIENCES_PARAM   = "dump_exp"           // Expect Bool (Optional)
+
+	LIST_FILES_ACTION       = "1"
+	FILE_FROM_SERVER_ACTION = "2"
+	FILE_TO_SERVER_ACTION   = "3"
 )

@@ -10,4 +10,5 @@ const (
 	MAX_PACKET_CONTENT_SIZE = 9999900
 
 	CLOSE_SERVER_GREETING = "Got the file!!, Thank you server, goodbye."
+	CLOSE_CLIENT_GREETING = "Got the file!!, Thank you client, goodbye."
 )

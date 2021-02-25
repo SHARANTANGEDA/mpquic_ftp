@@ -50,7 +50,8 @@ func performServerActivity(session quic.Session) {
 	requestData := strings.Split(dataReceived, ",")
 
 	// 2. Perform Requested Action
-	if requestData[0] == "1" {
+	switch requestData[0] {
+	case constants.LIST_FILES_ACTION:
 		// 2.1 Send File List to client
 		files, err := ioutil.ReadDir(os.Getenv(constants.PROJECT_HOME_DIR) + "/" + constants.SERVER_STORAGE_DIR + "/")
 		if err != nil {
@@ -66,7 +67,7 @@ func performServerActivity(session quic.Session) {
 		}
 
 		common.SendStringWithQUIC(session, strings.Join(fileNameList, ","))
-	} else {
+	case constants.FILE_FROM_SERVER_ACTION:
 		// 2.2 Send File
 		err = common.SendFileWithQUIC(session, os.Getenv(constants.PROJECT_HOME_DIR)+"/"+
 			constants.SERVER_STORAGE_DIR+"/"+requestData[1])
@@ -78,6 +79,14 @@ func performServerActivity(session quic.Session) {
 
 		// Send Ack after file transfer
 		common.ReadDataWithQUIC(session)
+	case constants.FILE_TO_SERVER_ACTION:
+		// 2.2 Receive File
+		common.StoreFile(requestData[1], os.Getenv(constants.PROJECT_HOME_DIR)+"/"+constants.SERVER_STORAGE_DIR,
+			common.ReadDataWithQUIC(session))
+
+		// Send Ack after file transfer
+		common.SendStringWithQUIC(session, constants.CLOSE_CLIENT_GREETING)
+
 	}
 	_ = session.Close(err)
 }

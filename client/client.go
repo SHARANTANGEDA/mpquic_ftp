@@ -16,14 +16,14 @@ import (
 )
 
 func main() {
-	serverPort, serverIp, action, fileName, cfgClient := initializeClientArguments()
+	serverPort, serverIp, action, fileName, filePath, cfgClient := initializeClientArguments()
 	tlsConfig := &tls.Config{InsecureSkipVerify: true}
 	session, err := quic.DialAddr(serverIp+":"+serverPort, tlsConfig, cfgClient)
 	if err != nil {
 		log.Fatal("Error connecting to server: ", err.Error())
 	}
-
-	if action == "1" {
+	switch action {
+	case constants.LIST_FILES_ACTION:
 		// GET File List
 		common.SendStringWithQUIC(session, action+",")
 
@@ -35,7 +35,7 @@ func main() {
 		for idx, file := range fileNameList {
 			fmt.Println(idx+1, ": ", file)
 		}
-	} else {
+	case constants.FILE_FROM_SERVER_ACTION:
 		// GET File
 		common.SendStringWithQUIC(session, action+","+fileName)
 
@@ -45,11 +45,27 @@ func main() {
 
 		// Send Ack after file transfer
 		common.SendStringWithQUIC(session, constants.CLOSE_SERVER_GREETING)
+	case constants.FILE_TO_SERVER_ACTION:
+		// Send File
+		pathSep := strings.Split(filePath, "/")
+		fileName = pathSep[len(pathSep)-1]
+		common.SendStringWithQUIC(session, action+","+fileName)
+
+		err = common.SendFileWithQUIC(session, filePath)
+		if err != nil {
+			fmt.Println("Error Sending the file: ", err.Error())
+			_ = session.Close(err)
+			return
+		}
+
+		// Send Ack after file transfer
+		common.ReadDataWithQUIC(session)
+
 	}
 	_ = session.Close(err)
 }
 
-func initializeClientArguments() (string, string, string, string, *quic.Config) {
+func initializeClientArguments() (string, string, string, string, string, *quic.Config) {
 	if os.Getenv(constants.PROJECT_HOME_DIR) == "" {
 		panic("`PROJECT_HOME_DIR` Env variable not found")
 	}
@@ -69,17 +85,22 @@ func initializeClientArguments() (string, string, string, string, *quic.Config) 
 
 	scheduler := flag.String(constants.SCHEDULER_PARAM, mpqConstants.SCHEDULER_ROUND_ROBIN, "Scheduler Name, a string")
 	action := flag.String(constants.ACTION_PARAM, "1", "1: To Get FileList, 2: Get the file, Default: 1")
-	fileName := flag.String(constants.UPLOAD_FILE_PARAM, "", "Mention the fileName, when action is 2 (Required")
+	fileName := flag.String(constants.DOWNLOAD_FILE_PARAM, "", "Mention the fileName, when action is 2 (Required)")
+	filePath := flag.String(constants.UPLOAD_FILE_PATH_PARAM, "", "Mention the absolute path, when action is 3 (Required)")
 	flag.Parse()
 
-	if *action != "1" && *action != "2" {
+	if *action != constants.LIST_FILES_ACTION && *action != constants.FILE_FROM_SERVER_ACTION &&
+		*action != constants.FILE_TO_SERVER_ACTION {
 		log.Fatal("Invalid Action choosen, please choose among 1 or 2")
 	}
-	if *action == "2" && *fileName == "" {
+	if *action == constants.FILE_FROM_SERVER_ACTION && *fileName == "" {
 		log.Fatal("Action 2 requires file_name, please choose file_name")
 	}
+	if *action == constants.FILE_TO_SERVER_ACTION && *filePath == "" {
+		log.Fatal("Action 3 requires file_path, please add absolute file_path")
+	}
 
-	return serverPort, serverIp, *action, *fileName, &quic.Config{
+	return serverPort, serverIp, *action, *fileName, *filePath, &quic.Config{
 		WeightsFile: weightsFile,
 		Scheduler:   *scheduler,
 		CreatePaths: true,

@@ -99,7 +99,7 @@ func ReadDataWithQUIC(session quic.Session) string {
 
 func StoreFile(fileName, dirPath, fileData string) {
 	if fileData == "" {
-		log.Fatal("Error: [FILE_DOWNLOAD] File doesn't exist or is empty")
+		log.Fatal("Error: [FILE_RECEIVE] File doesn't exist or is empty")
 	}
 	uniqueId, err := shortid.Generate()
 	file, err := os.Create(dirPath + "/" + uniqueId + "_" + fileName)

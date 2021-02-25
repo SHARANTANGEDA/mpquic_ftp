@@ -25,7 +25,9 @@ Sync dependencies after enabling the environment variable
 ##### Client Run
 - `cd client && go build client.go`
 - `./client --scheduler=round_robin --action=2 --file_name=hello.txt`
-### *Note: Two values of action are possible 1, 2*
+### *Note: Three values of action are possible 1, 2, 3*
+#### For Action:2 - Download from Server - `file_name` is required
+#### For Action:3 - Upload to Server - `file_path` (abs path) is required
 
 ### List of Available Schedulers
 

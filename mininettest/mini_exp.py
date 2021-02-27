@@ -76,7 +76,7 @@ if __name__ == '__main__':
                         default=10)
     parser.add_argument('--path_2_bw', type=float, dest="path_2_bw", help="Set Bandwidth for client path 2",
                         default=10)
-    parser.add_argument("--scheduler_name", type=str, dest="scheduler", help="Choose Scheduler Name")
+    # parser.add_argument("--scheduler_name", type=str, dest="scheduler", help="Choose Scheduler Name")
     parser.add_argument('--latency', type=int, dest="latency", help="Set Client Delay", default=0)
 
     args = parser.parse_args()
@@ -84,8 +84,14 @@ if __name__ == '__main__':
     EXPERIMENTS_DIR = os.path.join(project_home_dir, "mininettest/experiments")
     client_path_1_bw, client_path_2_bw = args.path_1_bw, args.path_2_bw
     latency = args.latency
-    current_exp_dir = os.path.join(EXPERIMENTS_DIR, args.scheduler, str(client_path_1_bw) + "_" + str(client_path_2_bw)
-                                   + "_" + str(latency))
-    os.makedirs(current_exp_dir, exist_ok=True)
-    for i in range(0, 10):
-        run_experiment(args.scheduler, i)
+
+    schedulers = ["low_latency", "random", "low_bandit", "peekaboo", "ecf", "blest", "dqnAgent",  "first_path"]
+    for scheduler in schedulers:
+        for bw in [0.5, 1.0, 2.0, 5.0, 10.0]:
+            client_path_1_bw = bw
+            client_path_2_bw = bw
+            current_exp_dir = os.path.join(EXPERIMENTS_DIR, scheduler, str(client_path_1_bw) + "_" +
+                                           str(client_path_2_bw) + "_" + str(latency))
+            os.makedirs(current_exp_dir, exist_ok=True)
+            for i in range(0, 10):
+                run_experiment(scheduler, i)

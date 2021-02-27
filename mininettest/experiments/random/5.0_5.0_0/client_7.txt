@@ -1,0 +1,3 @@
+Selected Multipath Scheduler: random
+Sent Bytes:  12
+Data received:  0

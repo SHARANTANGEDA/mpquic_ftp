@@ -59,6 +59,7 @@ func SendStringWithQUIC(session quic.Session, message string) {
 
 func SendFileWithQUIC(session quic.Session, filePath string) error {
 	fileBytes, err := ioutil.ReadFile(filePath)
+	fmt.Println("Read File", filePath)
 	if err != nil {
 		return fmt.Errorf("file not found: %v", err.Error())
 	}

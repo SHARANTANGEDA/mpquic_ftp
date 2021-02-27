@@ -49,6 +49,7 @@ func main() {
 		// Send File
 		pathSep := strings.Split(filePath, "/")
 		fileName = pathSep[len(pathSep)-1]
+		fmt.Println(fileName, pathSep)
 		common.SendStringWithQUIC(session, action+","+fileName)
 
 		err = common.SendFileWithQUIC(session, filePath)

@@ -88,8 +88,8 @@ if __name__ == '__main__':
     schedulers = ["round_robin", "low_latency", "random", "low_bandit", "peekaboo", "ecf", "blest", "dqnAgent",
                   "first_path"]
     for scheduler in schedulers:
-        for bw in [0.5, 1.0, 2.0, 5.0, 10.0]:
-            client_path_1_bw = bw
+        for bw in [1.0, 2.0, 5.0, 10.0]:
+            client_path_1_bw = 0.5
             client_path_2_bw = bw
             current_exp_dir = os.path.join(EXPERIMENTS_DIR, scheduler, str(client_path_1_bw) + "_" +
                                            str(client_path_2_bw) + "_" + str(latency))

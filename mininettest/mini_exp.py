@@ -2,7 +2,6 @@
 import argparse
 import os
 
-from mininet.cli import CLI
 from mininet.link import TCLink
 from mininet.log import setLogLevel
 from mininet.net import Mininet
@@ -19,7 +18,7 @@ class DoubleConnTopo(Topo):
         s1 = self.addSwitch('s1')
         self.addLink(s1, client, bw=client_path_1_bw, delay=latency, cls=TCLink)
         self.addLink(s1, client, bw=client_path_2_bw, delay=latency, cls=TCLink)
-        self.addLink(s1, server, bw=(client_path_1_bw+client_path_2_bw), cls=TCLink)
+        self.addLink(s1, server, bw=(client_path_1_bw + client_path_2_bw), cls=TCLink)
 
 
 def setup_environment():
@@ -41,12 +40,12 @@ def setup_environment():
     return net
 
 
-def run_experiment(scheduler):
+def run_experiment(scheduler, run_id):
     net = setup_environment()
 
     # Create Exp file
-    exp_file_name_server = "server_" + scheduler + "_" + str(client_path_1_bw) + "_" + str(client_path_2_bw) + "_" + str(latency) + ".txt"
-    exp_file_name_client = "client_" + scheduler + "_" + str(client_path_1_bw) + "_" + str(client_path_2_bw) + "_" + str(latency) + ".txt"
+    exp_file_name_server = "server_" + str(run_id) + ".txt"
+    exp_file_name_client = "client_" + str(run_id) + ".txt"
     server = net.get('server')
     client = net.get('client')
     s1 = net.get("s1")
@@ -56,18 +55,16 @@ def run_experiment(scheduler):
     env_variables_cmd = "cd {} && set -a && source {} && set +a".format(project_home_dir, "envs/mininet.env")
     client_dir = os.path.join(project_home_dir, "client")
     server_cmd = "cd {} && ./server --scheduler={} > {} &".format(project_home_dir, scheduler,
-                                                                os.path.join(EXPERIMENTS_DIR, exp_file_name_server))
+                                                                  os.path.join(current_exp_dir, exp_file_name_server))
 
     client_cmd = "cd {} && ./client --scheduler={} --action=2 --file_name=sample.txt> {}".format(
-        client_dir, scheduler, os.path.join(EXPERIMENTS_DIR, exp_file_name_client))
+        client_dir, scheduler, os.path.join(current_exp_dir, exp_file_name_client))
 
     client.cmd(env_variables_cmd)
     server.cmd(env_variables_cmd)
 
     server.cmd(server_cmd)
     client.cmd(client_cmd)
-
-    CLI(net)
 
     net.stop()
 
@@ -87,6 +84,8 @@ if __name__ == '__main__':
     EXPERIMENTS_DIR = os.path.join(project_home_dir, "mininettest/experiments")
     client_path_1_bw, client_path_2_bw = args.path_1_bw, args.path_2_bw
     latency = args.latency
-    run_experiment(args.scheduler)
-
-
+    current_exp_dir = os.path.join(EXPERIMENTS_DIR, args.scheduler, str(client_path_1_bw) + "_" + str(client_path_2_bw)
+                                   + "_" + str(latency))
+    os.makedirs(current_exp_dir, exist_ok=True)
+    for i in range(0, 10):
+        run_experiment(args.scheduler, i)

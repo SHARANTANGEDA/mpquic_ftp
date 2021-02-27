@@ -77,7 +77,7 @@ if __name__ == '__main__':
     parser.add_argument('--path_2_bw', type=float, dest="path_2_bw", help="Set Bandwidth for client path 2",
                         default=10)
     # parser.add_argument("--scheduler_name", type=str, dest="scheduler", help="Choose Scheduler Name")
-    parser.add_argument('--latency', type=int, dest="latency", help="Set Client Delay", default=0)
+    parser.add_argument('--latency', type=str, dest="latency", help="Set Client Delay", default='0ms')
 
     args = parser.parse_args()
     project_home_dir = os.getenv("PROJECT_HOME_DIR", "/home/sharan/mpquic_ftp")

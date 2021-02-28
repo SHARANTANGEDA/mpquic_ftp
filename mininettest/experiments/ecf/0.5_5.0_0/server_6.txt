@@ -1,0 +1,8 @@
+Selected Multipath Scheduler: ecf
+Listening on 0.0.0.0:3060
+Press ^C to shutdown the server
+Session Started, New Client Spawned
+Data received: 12 	|| Time Taken To Download File: 0.017909 sec
+Sent Bytes:  13107200
+Time Taken to Send File: 21.678927 sec
+Data received: 42 	|| Time Taken To Download File: 0.000320 sec

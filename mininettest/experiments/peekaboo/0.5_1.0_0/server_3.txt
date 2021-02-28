@@ -1,0 +1,8 @@
+Selected Multipath Scheduler: peekaboo
+Listening on 0.0.0.0:3060
+Press ^C to shutdown the server
+Session Started, New Client Spawned
+Data received: 12 	|| Time Taken To Download File: 0.001265 sec
+Sent Bytes:  7945943
+Time Taken to Send File: 115.174896 sec
+Data received:  0

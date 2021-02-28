@@ -1,0 +1,8 @@
+Selected Multipath Scheduler: random
+Listening on 0.0.0.0:3060
+Press ^C to shutdown the server
+Session Started, New Client Spawned
+Data received: 12 	|| Time Taken To Download File: 0.000929 sec
+Sent Bytes:  8948735
+Time Taken to Send File: 70.518141 sec
+Data received:  0

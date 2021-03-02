@@ -1,4 +1,4 @@
 Selected Multipath Scheduler: low_bandit
 Sent Bytes:  12
-Data received: 13107200 	|| Time Taken To Download File: 138.566534 sec
+Data received: 13107200 	|| Time Taken To Download File: 139.961372 sec
 Sent Bytes:  42

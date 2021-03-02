@@ -2,4 +2,7 @@ Selected Multipath Scheduler: low_bandit
 Listening on 0.0.0.0:3060
 Press ^C to shutdown the server
 Session Started, New Client Spawned
-Data received: 12 	|| Time Taken To Download File: 0.000940 sec
+Data received: 12 	|| Time Taken To Download File: 0.001173 sec
+Sent Bytes:  9471838
+Time Taken to Send File: 100.826070 sec
+Data received:  0

@@ -1,4 +1,4 @@
 Selected Multipath Scheduler: random
 Sent Bytes:  12
-Data received: 13107200 	|| Time Taken To Download File: 71.978949 sec
+Data received: 13107200 	|| Time Taken To Download File: 86.714981 sec
 Sent Bytes:  42

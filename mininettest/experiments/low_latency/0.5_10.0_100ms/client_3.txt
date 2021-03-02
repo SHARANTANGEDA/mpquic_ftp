@@ -1,4 +1,4 @@
 Selected Multipath Scheduler: low_latency
 Sent Bytes:  12
-Data received: 13107200 	|| Time Taken To Download File: 16.154416 sec
+Data received: 13107200 	|| Time Taken To Download File: 16.164079 sec
 Sent Bytes:  42

@@ -1,4 +1,4 @@
 Selected Multipath Scheduler: round_robin
 Sent Bytes:  12
-Data received: 13107200 	|| Time Taken To Download File: 75.139905 sec
+Data received: 13107200 	|| Time Taken To Download File: 75.139946 sec
 Sent Bytes:  42

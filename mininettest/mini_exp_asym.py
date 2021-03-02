@@ -85,7 +85,7 @@ if __name__ == '__main__':
     client_path_1_bw, client_path_2_bw = args.path_1_bw, args.path_2_bw
     latency = args.latency
 
-    schedulers = ["round_robin", "low_latency", "random", "low_bandit", "peekaboo", "ecf", "blest", "dqnAgent",
+    schedulers = ["round_robin", "low_latency", "random", "low_bandit", "peekaboo", "ecf", "blest",
                   "first_path"]
     for scheduler in schedulers:
         for bw in [1.0, 2.0, 5.0, 10.0]:

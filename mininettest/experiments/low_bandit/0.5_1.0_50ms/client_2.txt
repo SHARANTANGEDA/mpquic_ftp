@@ -1,0 +1,2 @@
+Selected Multipath Scheduler: low_bandit
+Sent Bytes:  12

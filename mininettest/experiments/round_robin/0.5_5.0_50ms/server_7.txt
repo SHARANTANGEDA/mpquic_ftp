@@ -1,0 +1,8 @@
+Selected Multipath Scheduler: round_robin
+Listening on 0.0.0.0:3060
+Press ^C to shutdown the server
+Session Started, New Client Spawned
+Data received: 12 	|| Time Taken To Download File: 0.100801 sec
+Sent Bytes:  13107200
+Time Taken to Send File: 23.700665 sec
+Data received: 42 	|| Time Taken To Download File: 0.000310 sec

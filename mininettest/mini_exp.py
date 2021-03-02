@@ -87,6 +87,8 @@ if __name__ == '__main__':
 
     schedulers = ["round_robin", "low_latency", "random", "low_bandit", "peekaboo", "ecf", "blest",
                   "first_path"]
+    total_cnt, current_cnt = 400, 0
+    print("Progress:", current_cnt)
     for scheduler in schedulers:
         for bw in [0.5, 1.0, 2.0, 5.0, 10.0]:
             client_path_1_bw = bw
@@ -96,3 +98,5 @@ if __name__ == '__main__':
             os.makedirs(current_exp_dir, exist_ok=True)
             for i in range(0, 10):
                 run_experiment(scheduler, i)
+                current_cnt += 1
+                print("Progress: {}/{}; {}%".format(current_cnt, total_cnt, current_cnt*100/total_cnt))

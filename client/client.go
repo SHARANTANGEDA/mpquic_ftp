@@ -105,5 +105,7 @@ func initializeClientArguments() (string, string, string, string, string, *quic.
 		Scheduler:   *scheduler,
 		CreatePaths: true,
 		Training:    true,
+		Bandwidth1:  10,
+		Bandwidth2:  10,
 	}
 }

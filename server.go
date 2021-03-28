@@ -119,5 +119,7 @@ func initializeServerArguments() (string, *quic.Config) {
 		DumpExperiences:   *dumpExperiences,
 		Epsilon:           *epsilon,
 		AllowedCongestion: *allowedCongestion,
+		Bandwidth1:        10,
+		Bandwidth2:        10,
 	}
 }

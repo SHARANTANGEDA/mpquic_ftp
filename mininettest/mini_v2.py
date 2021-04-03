@@ -17,9 +17,9 @@ class DoubleConnTopo(Topo):
         client = self.addHost("client")
         server = self.addHost("server")
         s1 = self.addSwitch('s1')
-        self.addLink(s1, client, bw=client_path_1_bw, cls=TCLink)
-        self.addLink(s1, client, bw=client_path_2_bw, cls=TCLink)
-        self.addLink(s1, server, bw=(client_path_1_bw+client_path_2_bw), cls=TCLink)
+        self.addLink(s1, client, bw=client_path_1_bw, delay=delay_1, loss=loss_1, cls=TCLink)
+        self.addLink(s1, client, bw=client_path_2_bw, delay=delay_2, loss=loss_2, cls=TCLink)
+        self.addLink(s1, server, bw=(client_path_1_bw + client_path_2_bw), cls=TCLink)
 
 
 def setup_environment(client_delay, switch_delay):
@@ -86,8 +86,14 @@ if __name__ == '__main__':
     parser.add_argument('--path_2_bw', type=int, dest="path_2_bw", help="Set Bandwidth for client path 2",
                         default=10)
 
+    parser.add_argument('--delay_1', type=str, dest="delay_1", help="Path 1 Delay", default='0ms')
+    parser.add_argument('--delay_2', type=str, dest="delay_2", help="Path 2 Delay", default='0ms')
+    parser.add_argument('--loss_1', type=int, dest="loss_1", help="Path 1 Loss", default=0)
+    parser.add_argument('--loss_2', type=int, dest="loss_2", help="Path 2 Loss", default=0)
+
     args = parser.parse_args()
     project_home_dir = os.getenv("PROJECT_HOME_DIR", ".")
     client_path_1_bw, client_path_2_bw = args.path_1_bw, args.path_2_bw
+    delay_1, delay_2, loss_1, loss_2 = args.delay_1, args.delay_2, args.loss_1, args.loss_2
     run_experiment(args.client_delay, args.switch_delay)
 

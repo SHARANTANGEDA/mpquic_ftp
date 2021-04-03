@@ -109,6 +109,7 @@ func initializeServerArguments() (string, *quic.Config) {
 	dumpExperiences := flag.Bool(constants.DUMP_EXPERIENCES_PARAM, false, "a bool(true, false), default: false")
 	epsilon := flag.Float64(constants.EPSILON_PARAM, 0.01, "a float64, default: 0 for epsilon value")
 	allowedCongestion := flag.Int(constants.ALLOWED_CONGESTION_PARAM, 2500, "a Int, default: 2500")
+	splitRatio := flag.Float64(constants.SPLIT_RATIO_PARAM, 1.0, "a Float, default: 1.0")
 	flag.Parse()
 
 	return serverPort, &quic.Config{
@@ -121,5 +122,6 @@ func initializeServerArguments() (string, *quic.Config) {
 		AllowedCongestion: *allowedCongestion,
 		Bandwidth1:        10,
 		Bandwidth2:        10,
+		SplitRatio:        float32(*splitRatio),
 	}
 }

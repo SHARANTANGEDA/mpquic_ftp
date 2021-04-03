@@ -14,6 +14,7 @@ const (
 	EPSILON_PARAM            = "eps"                // Expect Float (Optional)
 	ALLOWED_CONGESTION_PARAM = "allowed_congestion" // Expect +ve Int (Optional)
 	DUMP_EXPERIENCES_PARAM   = "dump_exp"           // Expect Bool (Optional)
+	SPLIT_RATIO_PARAM        = "split_ratio"        // Expect Float
 
 	LIST_FILES_ACTION       = "1"
 	FILE_FROM_SERVER_ACTION = "2"

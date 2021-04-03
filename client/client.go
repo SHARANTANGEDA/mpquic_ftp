@@ -87,7 +87,7 @@ func initializeClientArguments() (string, string, string, string, string, *quic.
 	action := flag.String(constants.ACTION_PARAM, "1", "1: To Get FileList, 2: Get the file, Default: 1")
 	fileName := flag.String(constants.DOWNLOAD_FILE_PARAM, "", "Mention the fileName, when action is 2 (Required)")
 	filePath := flag.String(constants.UPLOAD_FILE_PATH_PARAM, "", "Mention the absolute path, when action is 3 (Required)")
-	splitRatio := flag.Float64(constants.SPLIT_RATIO_PARAM, 2.5, "a Int, default: 2500")
+	splitRatio := flag.Float64(constants.SPLIT_RATIO_PARAM, 2.5, "a Float, default: 1.0")
 	flag.Parse()
 
 	if *action != constants.LIST_FILES_ACTION && *action != constants.FILE_FROM_SERVER_ACTION &&

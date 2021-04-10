@@ -10,5 +10,6 @@
 		"loss_list": [1, 2, 3, 4, 5]
 	},
 	"maximum_experiment_count": 1000,
-	"split_ratios": [9.0, 4.0, 2.33, 1.5, 1.0, 0.667, 0.4286, 0.25, 0.11, 0]
+	"split_ratios": [9.0, 4.0, 2.33, 1.5, 1.0, 0.667, 0.4286, 0.25, 0.11, 0],
+	"runs_per_combination": 3
 }

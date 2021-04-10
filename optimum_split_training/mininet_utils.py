@@ -67,7 +67,8 @@ def _run_experiment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_dela
     net.stop()
 
 
-def run_exp_for_combination(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_delay, path_2_loss, split_ratio):
+def run_exp_for_combination(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_delay, path_2_loss, split_ratio,
+                            runs_per_combination):
     setLogLevel('warning')
     project_home_dir = os.getenv("PROJECT_HOME_DIR", "/home/sharan/mpquic_ftp")
     EXPERIMENTS_DIR = os.path.join(project_home_dir, "optimum_split_training/experiments")
@@ -75,7 +76,7 @@ def run_exp_for_combination(path_1_bw, path_1_delay, path_1_loss, path_2_bw, pat
     current_exp_dir = os.path.join(EXPERIMENTS_DIR, str(path_1_bw) + "_" + str(path_1_delay) + "_" + str(path_1_loss) +
                                    "_" + str(path_2_bw) + "_" + str(path_2_delay) + str(path_2_loss) + str(split_ratio))
     os.makedirs(current_exp_dir, exist_ok=True)
-    for i in range(0, 3):
+    for i in range(0, runs_per_combination):
         _run_experiment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_delay, path_2_loss, project_home_dir,
                         split_ratio, i, current_exp_dir)
 

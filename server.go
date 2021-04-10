@@ -122,6 +122,7 @@ func initializeServerArguments() (string, *quic.Config) {
 		AllowedCongestion: *allowedCongestion,
 		Bandwidth1:        10,
 		Bandwidth2:        10,
+		Latency1:          0.1,
 		SplitRatio:        float32(*splitRatio),
 	}
 }

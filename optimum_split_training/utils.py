@@ -7,7 +7,8 @@ import pandas as pd
 def load_config():
     file = open("config.json", "r")
     config = json.load(file)
-    return config["path_1"], config["path_2"], config["maximum_experiment_count"], config["split_ratios"]
+    return config["path_1"], config["path_2"], config["maximum_experiment_count"], config["split_ratios"], config[
+        "runs_per_combination"]
 
 
 def generate_all_combinations(bw_1_list, delay_1_list, loss_1_list, bw_2_list, delay_2_list, loss_2_list):

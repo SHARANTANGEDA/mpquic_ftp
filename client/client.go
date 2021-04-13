@@ -106,6 +106,7 @@ func initializeClientArguments() (string, string, string, string, string, *quic.
 		Scheduler:   *scheduler,
 		CreatePaths: true,
 		Training:    true,
+		KeepAlive:   true,
 		Bandwidth1:  10,
 		Bandwidth2:  10,
 		SplitRatio:  float32(*splitRatio),

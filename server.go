@@ -117,6 +117,7 @@ func initializeServerArguments() (string, *quic.Config) {
 		Scheduler:         *scheduler,
 		CreatePaths:       true,
 		Training:          true,
+		KeepAlive:         true,
 		DumpExperiences:   *dumpExperiences,
 		Epsilon:           *epsilon,
 		AllowedCongestion: *allowedCongestion,

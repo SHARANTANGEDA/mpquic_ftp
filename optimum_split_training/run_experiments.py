@@ -1,4 +1,5 @@
 import argparse
+from datetime import datetime
 
 import pandas as pd
 
@@ -10,7 +11,7 @@ parser.add_argument('--m_id', type=int, dest="m_id", help="Machine Id", default=
 args = parser.parse_args()
 
 dataset_split = args.m_id
-
+start_time = datetime.now()
 df = None
 if dataset_split == 1:
     df = pd.read_csv("part_1.csv")
@@ -33,5 +34,7 @@ for idx, row in df.iterrows():
                                               row['path_2_bw'], row['path_2_delay'], row['path_2_loss'], split_ratio,
                                               runs_per_combination)
         current_cnt += 1
-        print("Progress: {}/{}; {}% <==> {}/{}".format(current_cnt, total_cnt, current_cnt * 100 / total_cnt,
-                                                       idx, len(df)))
+        print("Progress: {}/{}; {}% <==> {}/{} || Time Since Start: {} sec".format(current_cnt, total_cnt,
+                                                                                   current_cnt * 100 / total_cnt,
+                                                                                   idx, len(df), (
+                                                                                               datetime.now() - start_time).total_seconds()))

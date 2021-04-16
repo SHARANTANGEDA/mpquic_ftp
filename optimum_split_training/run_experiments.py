@@ -7,20 +7,14 @@ import mininet_utils
 import utils
 
 parser = argparse.ArgumentParser(description='Run Experiments Based on Machine ID')
-parser.add_argument('--m_id', type=int, dest="m_id", help="Machine Id", default=0)
+parser.add_argument('--m_id', type=str, dest="m_id", help="Machine Id", default="0")
 args = parser.parse_args()
 
 dataset_split = args.m_id
 start_time = datetime.now()
 df = None
-if dataset_split == 1:
-    df = pd.read_csv("part_1.csv")
-elif dataset_split == 2:
-    df = pd.read_csv("part_2.csv")
-elif dataset_split == 3:
-    df = pd.read_csv("part_3.csv")
-elif dataset_split == 4:
-    df = pd.read_csv("part_4.csv")
+if not dataset_split == "0":
+    df = pd.read_csv("part_"+dataset_split+".csv")
 else:
     df = pd.read_csv("combinations.csv")
 

@@ -27,7 +27,7 @@ def _setup_environment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_d
     client.setIP("10.0.0.1", intf="client-eth0")
     client.setIP("10.0.0.2", intf="client-eth1")
 
-    routing_script_path = os.path.join(project_home_dir, "optimum_split_training/scripts/routing.sh")
+    routing_script_path = os.path.join(project_home_dir, "optimum_split_testing/scripts/routing.sh")
     client.cmd("chmod +x " + routing_script_path)
     client.cmd("bash " + routing_script_path)
 

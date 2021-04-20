@@ -27,7 +27,7 @@ def _setup_environment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_d
     client.setIP("10.0.0.1", intf="client-eth0")
     client.setIP("10.0.0.2", intf="client-eth1")
 
-    routing_script_path = os.path.join(project_home_dir, "optimum_split_testing/scripts/routing.sh")
+    routing_script_path = os.path.join(project_home_dir, "optimal_split_testing/scripts/routing.sh")
     client.cmd("chmod +x " + routing_script_path)
     client.cmd("bash " + routing_script_path)
 
@@ -76,7 +76,7 @@ def _run_experiment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_dela
 def run_exp_for_combination(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_delay, path_2_loss):
     setLogLevel('warning')
     project_home_dir = os.getenv("PROJECT_HOME_DIR", "/home/sharan/mpquic_ftp")
-    EXPERIMENTS_DIR = os.path.join(project_home_dir, "optimum_split_testing/results")
+    EXPERIMENTS_DIR = os.path.join(project_home_dir, "optimal_split_testing/results")
 
     current_exp_dir = os.path.join(EXPERIMENTS_DIR, str(path_1_bw) + "_" + str(path_1_delay) + "_" + str(path_1_loss) +
                                    "_" + str(path_2_bw) + "_" + str(path_2_delay) + "_" + str(path_2_loss))

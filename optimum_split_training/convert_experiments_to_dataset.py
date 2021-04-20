@@ -12,17 +12,21 @@ path_1_col, delay_1_col, loss_1_col, path_2_col, delay_2_col, loss_2_col, split_
                                                                                                        [], [], [], []
 samples = os.listdir(f'./experiments/')
 samples.remove(".gitkeep")
-for case in samples:
-    avg_transfer_time = 0
+samples.remove(".DS_Store")
+for idx, case in enumerate(samples):
+    avg_transfer_time, avail_cnt, excep_cnt = 0, 0, 0
     for i in range(0, runs_per_combination):
         file = open(f'./experiments/{case}/server_{i}.txt', "r")
         content = file.readlines()
         try:
-            transfer_time = content[6].split(":")[1].strip().split(" ")[0]
+            transfer_time = content[7].split(":")[1].strip().split(" ")[0]
             avg_transfer_time += float(transfer_time)
+            avail_cnt += 1
         except:
-            print(content, case, i)
-    avg_transfer_time /= 10
+            if avail_cnt == 0 and excep_cnt > 0:
+                print(content, case, i)
+            excep_cnt += 1
+    avg_transfer_time /= avail_cnt
     details = case.split("_")
     path_1_col.append(details[0])
     delay_1_col.append(details[1][:len(details[1]) - 2] if "ms" in details[1] else details[1])

@@ -81,15 +81,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Execute with Defined Bandwidth for path-1 and path-2')
     parser.add_argument('--add_client_delay', type=bool, dest="client_delay", help="Set Client Delay", default=False)
     parser.add_argument('--add_switch_delay', type=bool, dest="switch_delay", help="Set Switch Delay", default=False)
-    parser.add_argument('--path_1_bw', type=int, dest="path_1_bw", help="Set Bandwidth for client path 1",
-                        default=10)
-    parser.add_argument('--path_2_bw', type=int, dest="path_2_bw", help="Set Bandwidth for client path 2",
-                        default=10)
+    parser.add_argument('--path_1_bw', type=float, dest="path_1_bw", help="Set Bandwidth for client path 1",
+                        default=10.0)
+    parser.add_argument('--path_2_bw', type=float, dest="path_2_bw", help="Set Bandwidth for client path 2",
+                        default=10.0)
 
     parser.add_argument('--delay_1', type=str, dest="delay_1", help="Path 1 Delay", default='0ms')
     parser.add_argument('--delay_2', type=str, dest="delay_2", help="Path 2 Delay", default='0ms')
-    parser.add_argument('--loss_1', type=int, dest="loss_1", help="Path 1 Loss", default=0)
-    parser.add_argument('--loss_2', type=int, dest="loss_2", help="Path 2 Loss", default=0)
+    parser.add_argument('--loss_1', type=float, dest="loss_1", help="Path 1 Loss", default=0.0)
+    parser.add_argument('--loss_2', type=float, dest="loss_2", help="Path 2 Loss", default=0.0)
 
     args = parser.parse_args()
     project_home_dir = os.getenv("PROJECT_HOME_DIR", ".")

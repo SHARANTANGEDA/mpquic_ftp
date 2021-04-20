@@ -12,7 +12,7 @@ path_1_col, delay_1_col, loss_1_col, path_2_col, delay_2_col, loss_2_col, split_
                                                                                                        [], [], [], []
 samples = os.listdir(f'./experiments/')
 samples.remove(".gitkeep")
-samples.remove(".DS_Store")
+# samples.remove(".DS_Store")
 for idx, case in enumerate(samples):
     avg_transfer_time, avail_cnt, excep_cnt = 0, 0, 0
     for i in range(0, runs_per_combination):

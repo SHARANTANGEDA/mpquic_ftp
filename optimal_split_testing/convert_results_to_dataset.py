@@ -13,12 +13,12 @@ for idx, case in enumerate(samples):
     transfer_time, avail_cnt, excep_cnt = 0, 0, 0
     file = open(f'./results/{case}/server.txt', "r")
     content = file.readlines()
+    print(content, case)
     try:
         transfer_time = content[7].split(":")[1].strip().split(" ")[0]
     except:
-        if avail_cnt == 0 and excep_cnt > 0:
-            print(content, case)
-        excep_cnt += 1
+        print(content, case)
+
     details = case.split("_")
     path_1_col.append(details[0])
     delay_1_col.append(details[1][:len(details[1]) - 2] if "ms" in details[1] else details[1])

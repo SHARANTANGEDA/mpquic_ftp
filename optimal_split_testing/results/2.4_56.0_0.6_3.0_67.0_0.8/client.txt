@@ -1,0 +1,6 @@
+Default training Dir Path:
+Selected Multipath Scheduler: optimum_split
+Debug prediction: [[1.9554386]]Split Ratio Predicted: 1.9554386
+Sent Bytes:  12
+Data received: 1280000 	|| Time Taken To Download File: 2.104865 sec
+Sent Bytes:  42

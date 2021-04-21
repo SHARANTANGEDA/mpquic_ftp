@@ -4,7 +4,6 @@ Listening on 0.0.0.0:3060
 Press ^C to shutdown the server
 Split Ratio Used: 0.667
 Session Started, New Client Spawned
-Data received: 12 	|| Time Taken To Download File: 0.000649 sec
+Data received: 12 	|| Time Taken To Download File: 0.000800 sec
 Sent Bytes:  1280000
-Time Taken to Send File: 3.775015 sec
-Data received: 42 	|| Time Taken To Download File: 0.000905 sec
+Time Taken to Send File: 4.271378 sec

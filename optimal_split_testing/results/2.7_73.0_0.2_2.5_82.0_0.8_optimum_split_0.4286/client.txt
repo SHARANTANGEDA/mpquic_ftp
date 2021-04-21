@@ -1,6 +1,6 @@
 Default training Dir Path:
 Selected Multipath Scheduler: optimum_split
-Split Ratio Used: 9
+Split Ratio Used: 0.4286
 Sent Bytes:  12
-Data received: 1280000 	|| Time Taken To Download File: 4.077567 sec
+Data received: 1280000 	|| Time Taken To Download File: 2.734981 sec
 Sent Bytes:  42

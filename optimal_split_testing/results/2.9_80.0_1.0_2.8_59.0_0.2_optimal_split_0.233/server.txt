@@ -1,0 +1,10 @@
+Default training Dir Path:
+Invalid Multipath Scheduler selected, defaulting to round_robin
+ Available schedulers: [round_robin low_latency peekaboo ecf dqnAgent blest first_path low_bandit random optimum_split]
+Listening on 0.0.0.0:3060
+Press ^C to shutdown the server
+Split Ratio Used: 0.233
+Session Started, New Client Spawned
+Data received: 12 	|| Time Taken To Download File: 0.000789 sec
+Sent Bytes:  1280000
+Time Taken to Send File: 2.495971 sec

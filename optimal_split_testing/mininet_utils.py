@@ -78,7 +78,7 @@ def run_exp_for_combination(path_1_bw, path_1_delay, path_1_loss, path_2_bw, pat
     EXPERIMENTS_DIR = os.path.join(project_home_dir, "optimal_split_testing/results")
 
     current_exp_dir = os.path.join(EXPERIMENTS_DIR, str(path_1_bw) + "_" + str(path_1_delay) + "_" + str(path_1_loss) +
-                                   "_" + str(path_2_bw) + "_" + str(path_2_delay) + "_" + str(path_2_loss))
+                                   "_" + str(path_2_bw) + "_" + str(path_2_delay) + "_" + str(path_2_loss)) + "_" + str(scheduler)
     os.makedirs(current_exp_dir, exist_ok=True)
     _run_experiment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_delay, path_2_loss, project_home_dir,
                     current_exp_dir, scheduler)

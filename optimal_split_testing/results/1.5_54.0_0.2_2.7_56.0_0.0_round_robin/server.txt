@@ -1,0 +1,10 @@
+Default training Dir Path:
+Selected Multipath Scheduler: round_robin
+Listening on 0.0.0.0:3060
+Press ^C to shutdown the server
+Debug prediction: [[1.740566]]Split Ratio Predicted: 1.740566
+Session Started, New Client Spawned
+Data received: 12 	|| Time Taken To Download File: 0.000391 sec
+Sent Bytes:  1280000
+Time Taken to Send File: 2.444693 sec
+Data received: 42 	|| Time Taken To Download File: 0.000877 sec

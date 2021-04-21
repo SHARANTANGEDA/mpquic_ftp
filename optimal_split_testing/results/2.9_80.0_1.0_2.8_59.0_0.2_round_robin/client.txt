@@ -1,0 +1,6 @@
+Default training Dir Path:
+Selected Multipath Scheduler: round_robin
+Debug prediction: [[1.815255]]Split Ratio Predicted: 1.815255
+Sent Bytes:  12
+Data received: 1280000 	|| Time Taken To Download File: 1.986298 sec
+Sent Bytes:  42

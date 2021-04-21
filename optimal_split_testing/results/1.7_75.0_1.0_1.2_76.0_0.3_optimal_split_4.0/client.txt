@@ -1,7 +1,0 @@
-Default training Dir Path:
-Invalid Multipath Scheduler selected, defaulting to round_robin
- Available schedulers: [round_robin low_latency peekaboo ecf dqnAgent blest first_path low_bandit random optimum_split]
-Split Ratio Used: 4
-Sent Bytes:  12
-Data received: 1280000 	|| Time Taken To Download File: 4.318534 sec
-Sent Bytes:  42

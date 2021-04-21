@@ -1,0 +1,6 @@
+Default training Dir Path:
+Selected Multipath Scheduler: ecf
+Debug prediction: [[1.740566]]Split Ratio Predicted: 1.740566
+Sent Bytes:  12
+Data received: 1280000 	|| Time Taken To Download File: 2.815732 sec
+Sent Bytes:  42

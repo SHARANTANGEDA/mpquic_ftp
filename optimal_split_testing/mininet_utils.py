@@ -37,10 +37,9 @@ def _setup_environment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_d
 
 
 def _run_experiment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_delay, path_2_loss, project_home_dir,
-                    current_exp_dir):
+                    current_exp_dir, scheduler_name):
     net = _setup_environment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_delay, path_2_loss,
                              project_home_dir)
-    scheduler = "optimum_split"
     # Create Exp file
     exp_file_name_server = "server.txt"
     exp_file_name_client = "client.txt"
@@ -53,12 +52,12 @@ def _run_experiment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_dela
     env_variables_cmd = "cd {} && set -a && source {} && set +a".format(project_home_dir, "envs/mininet.env")
     client_dir = os.path.join(project_home_dir, "client")
     server_cmd = "cd {} && ./server --scheduler={} --bw_1={} --delay_1={} --loss_1={} --bw_2={} --delay_2={} " \
-                 "--loss_2={} > {} &".format(project_home_dir, scheduler, path_1_bw, path_1_delay, path_1_loss,
+                 "--loss_2={} > {} &".format(project_home_dir, scheduler_name, path_1_bw, path_1_delay, path_1_loss,
                                              path_2_bw, path_2_delay, path_2_loss,
                                              os.path.join(current_exp_dir, exp_file_name_server))
 
     client_cmd = "cd {} && ./client --scheduler={} --action=2 --file_name=sample.txt --bw_1={} --delay_1={} " \
-                 "--loss_1={} --bw_2={} --delay_2={} --loss_2={} > {}".format(client_dir, scheduler, path_1_bw,
+                 "--loss_1={} --bw_2={} --delay_2={} --loss_2={} > {}".format(client_dir, scheduler_name, path_1_bw,
                                                                               path_1_delay, path_1_loss, path_2_bw,
                                                                               path_2_delay, path_2_loss,
                                                                               os.path.join(current_exp_dir,
@@ -73,7 +72,7 @@ def _run_experiment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_dela
     net.stop()
 
 
-def run_exp_for_combination(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_delay, path_2_loss):
+def run_exp_for_combination(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_delay, path_2_loss, scheduler):
     setLogLevel('warning')
     project_home_dir = os.getenv("PROJECT_HOME_DIR", "/home/sharan/mpquic_ftp")
     EXPERIMENTS_DIR = os.path.join(project_home_dir, "optimal_split_testing/results")
@@ -82,4 +81,4 @@ def run_exp_for_combination(path_1_bw, path_1_delay, path_1_loss, path_2_bw, pat
                                    "_" + str(path_2_bw) + "_" + str(path_2_delay) + "_" + str(path_2_loss))
     os.makedirs(current_exp_dir, exist_ok=True)
     _run_experiment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_delay, path_2_loss, project_home_dir,
-                    current_exp_dir)
+                    current_exp_dir, scheduler)

@@ -13,9 +13,8 @@ for idx, case in enumerate(samples):
     transfer_time, avail_cnt, excep_cnt = 0, 0, 0
     file = open(f'./results/{case}/server.txt', "r")
     content = file.readlines()
-    print(content, case)
     try:
-        transfer_time = content[7].split(":")[1].strip().split(" ")[0]
+        transfer_time = content[8].split(":")[1].strip().split(" ")[0]
     except:
         print(content, case)
 
@@ -26,10 +25,10 @@ for idx, case in enumerate(samples):
     path_2_col.append(details[3])
     delay_2_col.append(details[4][:len(details[4]) - 2] if "ms" in details[4] else details[4])
     loss_2_col.append(details[5])
-    split_ratios_list.append(transfer_time)
+    split_ratios_list.append(content[4].split(":")[2].strip()[:-1])
     tr_col.append(transfer_time)
 
 results_df['path_1_bw'], results_df['delay_1'], results_df['loss_1'], results_df['path_2_bw'], results_df['delay_2'], \
 results_df['loss_2'] = path_1_col, delay_1_col, loss_1_col, path_2_col, delay_2_col, loss_2_col
 results_df['split_ratio'], results_df['transfer_time'] = split_ratios_list, tr_col
-results_df.to_csv("./intermediate_results.csv", index=False)
+results_df.to_csv("./test_res.csv", index=False)

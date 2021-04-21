@@ -52,10 +52,13 @@ def _run_experiment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_dela
     # TODO: Expose Error when the file is not present
     env_variables_cmd = "cd {} && set -a && source {} && set +a".format(project_home_dir, "envs/mininet.env")
     client_dir = os.path.join(project_home_dir, "client")
-    server_cmd = "cd {} && ./server --scheduler={} --split_ratio={} > {} &".format(
+    # Give Dummy network params, as they will be overriden during experiments
+    server_cmd = "cd {} && ./server --scheduler={} --bw_1=1.0 --delay_1=0.0 --loss_1=0.0 --bw_2=1.0 --delay_2=0.0 " \
+                 "--loss_2=0.0 --split_ratio={} > {} &".format(
         project_home_dir, scheduler, split_ratio, os.path.join(current_exp_dir, exp_file_name_server))
 
-    client_cmd = "cd {} && ./client --scheduler={} --action=2 --file_name=sample.txt --split_ratio={} > {}".format(
+    client_cmd = "cd {} && ./client --scheduler={} --bw_1=1.0 --delay_1=0.0 --loss_1=0.0 --bw_2=1.0 --delay_2=0.0 " \
+                 "--loss_2=0.0  --action=2 --file_name=sample.txt --split_ratio={} > {}".format(
         client_dir, scheduler, split_ratio, os.path.join(current_exp_dir, exp_file_name_client))
 
     client.cmd(env_variables_cmd)

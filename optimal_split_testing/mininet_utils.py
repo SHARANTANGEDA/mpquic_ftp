@@ -38,8 +38,8 @@ def _setup_environment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_d
 
 def _run_experiment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_delay, path_2_loss, project_home_dir,
                     current_exp_dir, scheduler_name, split_ratio):
-    net = _setup_environment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_delay, path_2_loss,
-                             project_home_dir)
+    net = _setup_environment(path_1_bw, str(path_1_delay)+"ms", path_1_loss, path_2_bw, str(path_2_delay)+"ms",
+                             path_2_loss, project_home_dir)
     # Create Exp file
     exp_file_name_server = "server.txt"
     exp_file_name_client = "client.txt"

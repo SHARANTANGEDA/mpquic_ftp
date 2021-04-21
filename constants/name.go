@@ -20,6 +20,7 @@ const (
 	DELAY_2_PARAM            = "delay_2"            // Expect Float
 	LOSS_1_PARAM             = "loss_1"             // Expect Float
 	LOSS_2_PARAM             = "loss_2"             // Expect Float
+	SPLIT_RATIO_PARAM        = "split_ratio"        // Expect Float
 
 	LIST_FILES_ACTION       = "1"
 	FILE_FROM_SERVER_ACTION = "2"

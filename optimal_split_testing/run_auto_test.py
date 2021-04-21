@@ -5,7 +5,7 @@ import pandas as pd
 import mininet_utils
 
 parser = argparse.ArgumentParser(description='Run Automated Testing')
-parser.add_argument('--scheduler', type=str, dest="scheduler", help="Scheduler Name", default="optimal_split")
+parser.add_argument('--scheduler', type=str, dest="scheduler", help="Scheduler Name", default="optimum_split")
 parser.add_argument('--split_ratio', type=str, dest="split_ratio", help="Split Ratio", default="1.0")
 args = parser.parse_args()
 

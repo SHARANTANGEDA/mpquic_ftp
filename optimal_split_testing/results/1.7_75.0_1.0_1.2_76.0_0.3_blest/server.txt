@@ -1,9 +1,0 @@
-Default training Dir Path:
-Selected Multipath Scheduler: blest
-Listening on 0.0.0.0:3060
-Press ^C to shutdown the server
-Debug prediction: [[1.8053555]]Split Ratio Predicted: 1.8053555
-Session Started, New Client Spawned
-Data received: 12 	|| Time Taken To Download File: 0.000267 sec
-Sent Bytes:  1280000
-Time Taken to Send File: 3.584714 sec

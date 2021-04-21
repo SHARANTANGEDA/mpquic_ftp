@@ -1,6 +1,0 @@
-Default training Dir Path:
-Selected Multipath Scheduler: peekaboo
-Debug prediction: [[1.8053555]]Split Ratio Predicted: 1.8053555
-Sent Bytes:  12
-Data received: 1280000 	|| Time Taken To Download File: 4.676104 sec
-Sent Bytes:  42

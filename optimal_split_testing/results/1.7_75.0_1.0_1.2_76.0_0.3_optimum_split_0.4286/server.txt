@@ -1,9 +1,0 @@
-Default training Dir Path:
-Selected Multipath Scheduler: optimum_split
-Listening on 0.0.0.0:3060
-Press ^C to shutdown the server
-Split Ratio Used: 0.4286
-Session Started, New Client Spawned
-Data received: 12 	|| Time Taken To Download File: 0.001841 sec
-Sent Bytes:  1280000
-Time Taken to Send File: 4.078870 sec

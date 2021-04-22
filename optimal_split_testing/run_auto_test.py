@@ -9,7 +9,7 @@ parser.add_argument('--scheduler', type=str, dest="scheduler", help="Scheduler N
 parser.add_argument('--split_ratio', type=str, dest="split_ratio", help="Split Ratio", default="1.0")
 args = parser.parse_args()
 
-df = pd.read_csv("t1_sample.csv")
+df = pd.read_csv("t2_sample.csv")
 
 # Train and record split ratio for each combination
 results, total_cnt, current_cnt = [], len(df), 0

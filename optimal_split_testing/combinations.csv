@@ -1,4 +1,4 @@
-path_1_bw,path_1_delay,path_1_loss,path_2_bw,delay_2,loss_2
+path_1_bw,delay_1,loss_1,path_2_bw,delay_2,loss_2
 3.2,81,0.0,3.8,77,0.2
 4.4,79,0.7,3.2,51,0.3
 3.3,66,0.9,5.0,81,0.5

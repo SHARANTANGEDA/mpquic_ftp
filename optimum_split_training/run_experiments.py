@@ -12,11 +12,11 @@ args = parser.parse_args()
 
 dataset_split = args.m_id
 start_time = datetime.now()
-df = None
-if not dataset_split == "0":
-    df = pd.read_csv("part_"+dataset_split+".csv")
-else:
-    df = pd.read_csv("combinations.csv")
+df = pd.read_csv("combinations.csv")
+# if not dataset_split == "0":
+#     df = pd.read_csv("part_"+dataset_split+".csv")
+# else:
+#     df = pd.read_csv("combinations.csv")
 
 path_1, path_2, max_cnt, split_ratios_list, runs_per_combination = utils.load_config()
 

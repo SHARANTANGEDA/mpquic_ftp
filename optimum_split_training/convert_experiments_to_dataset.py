@@ -13,7 +13,7 @@ path_1_col, delay_1_col, loss_1_col, path_2_col, delay_2_col, loss_2_col, split_
                                                                                                        [], [], [], []
 var_col = []
 samples = os.listdir(f'./experiments/')
-# samples.remove(".gitkeep")
+samples.remove(".gitkeep")
 samples.remove(".DS_Store")
 for idx, case in enumerate(samples):
     avg_transfer_time, avail_cnt, excep_cnt = 0, 0, 0
@@ -46,4 +46,4 @@ for idx, case in enumerate(samples):
 results_df['path_1_bw'], results_df['delay_1'], results_df['loss_1'], results_df['path_2_bw'], results_df['delay_2'],\
 results_df['loss_2'] = path_1_col, delay_1_col, loss_1_col, path_2_col, delay_2_col, loss_2_col
 results_df['split_ratio'], results_df['transfer_time'], results_df["variance"] = split_ratios_list, tr_col, var_col
-results_df.to_csv("./intermediate_results.csv", index=False)
+results_df.to_csv("./intermediate_results_my_machine.csv", index=False)

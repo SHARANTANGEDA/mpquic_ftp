@@ -14,7 +14,7 @@ for idx, case in enumerate(samples):
     transfer_time, avail_cnt, excep_cnt = 0, 0, 0
     file = open(f'./results/{case}/server.txt', "r")
     content = file.readlines()
-    # print(content)
+    print(content)
     try:
         transfer_time = content[8].split(":")[1].strip().split(" ")[0]
     except:
@@ -27,7 +27,10 @@ for idx, case in enumerate(samples):
     path_2_col.append(details[3])
     delay_2_col.append(details[4][:len(details[4]) - 2] if "ms" in details[4] else details[4])
     loss_2_col.append(details[5])
-    split_ratios_list.append(content[4].split(":")[1].strip())
+    try:
+        split_ratios_list.append(content[4].split(":")[2].strip())
+    except:
+        split_ratios_list.append(content[4].split(":")[1].strip())
     tr_col.append(transfer_time)
     scheduler_col.append(details[6])
 

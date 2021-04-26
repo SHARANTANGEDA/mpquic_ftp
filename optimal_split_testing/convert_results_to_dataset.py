@@ -9,12 +9,12 @@ path_1_col, delay_1_col, loss_1_col, path_2_col, delay_2_col, loss_2_col, split_
 scheduler_col = []
 samples = os.listdir(f'./results/')
 samples.remove(".gitkeep")
-# samples.remove(".DS_Store")
+samples.remove(".DS_Store")
 for idx, case in enumerate(samples):
     transfer_time, avail_cnt, excep_cnt = 0, 0, 0
     file = open(f'./results/{case}/server.txt', "r")
     content = file.readlines()
-    print(content)
+    # print(content)
     try:
         transfer_time = content[8].split(":")[1].strip().split(" ")[0]
     except:
@@ -36,3 +36,4 @@ results_df['loss_2'] = path_1_col, delay_1_col, loss_1_col, path_2_col, delay_2_
 results_df['split_ratio'], results_df['transfer_time'], results_df['scheduler'] = split_ratios_list, tr_col, \
                                                                                   scheduler_col
 results_df.to_csv("./test_res_wait.csv", index=False)
+results_df.to_csv("./test_paper.csv", index=False)

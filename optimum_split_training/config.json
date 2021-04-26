@@ -15,5 +15,5 @@
 	},
 	"maximum_experiment_count": 10000,
 	"split_ratios": [9.0, 4.0, 2.33, 1.5, 1.0, 0.667, 0.4286, 0.25, 0.11, 0],
-	"runs_per_combination": 3
+	"runs_per_combination": 10
 }

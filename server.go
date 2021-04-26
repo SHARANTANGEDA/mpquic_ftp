@@ -115,7 +115,7 @@ func initializeServerArguments() (string, *quic.Config) {
 	delay2 := flag.Float64(constants.DELAY_2_PARAM, 0.0, "a Float in ms, default: 0.0")
 	loss1 := flag.Float64(constants.LOSS_1_PARAM, 0.0, "a Float in %, default: 0.0")
 	loss2 := flag.Float64(constants.LOSS_2_PARAM, 0.0, "a Float in %, default: 0.0")
-	splitRatio := flag.Float64(constants.SPLIT_RATIO_PARAM, 1.0, "a Float, default: 1.0")
+	splitRatio := flag.Float64(constants.SPLIT_RATIO_PARAM, 0.0, "a Float, default: 0.0")
 	flag.Parse()
 
 	return serverPort, &quic.Config{

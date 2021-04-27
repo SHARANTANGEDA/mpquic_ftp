@@ -87,6 +87,13 @@ func initializeClientArguments() (string, string, string, string, string, *quic.
 	action := flag.String(constants.ACTION_PARAM, "1", "1: To Get FileList, 2: Get the file, Default: 1")
 	fileName := flag.String(constants.DOWNLOAD_FILE_PARAM, "", "Mention the fileName, when action is 2 (Required)")
 	filePath := flag.String(constants.UPLOAD_FILE_PATH_PARAM, "", "Mention the absolute path, when action is 3 (Required)")
+	bandwidth1 := flag.Float64(constants.BANDWIDTH_1_PARAM, 1.0, "a Float in Mbps, default: 1.0")
+	bandwidth2 := flag.Float64(constants.BANDWIDTH_2_PARAM, 1.0, "a Float in Mbps, default: 1.0")
+	delay1 := flag.Float64(constants.DELAY_1_PARAM, 0.0, "a Float in ms, default: 0.0")
+	delay2 := flag.Float64(constants.DELAY_2_PARAM, 0.0, "a Float in ms, default: 0.0")
+	loss1 := flag.Float64(constants.LOSS_1_PARAM, 0.0, "a Float in %, default: 0.0")
+	loss2 := flag.Float64(constants.LOSS_2_PARAM, 0.0, "a Float in %, default: 0.0")
+	splitRatio := flag.Float64(constants.SPLIT_RATIO_PARAM, 0.0, "a Float, default: 0.0")
 	flag.Parse()
 
 	if *action != constants.LIST_FILES_ACTION && *action != constants.FILE_FROM_SERVER_ACTION &&
@@ -105,5 +112,13 @@ func initializeClientArguments() (string, string, string, string, string, *quic.
 		Scheduler:   *scheduler,
 		CreatePaths: true,
 		Training:    true,
+		KeepAlive:   true,
+		Bandwidth1:  float32(*bandwidth1),
+		Bandwidth2:  float32(*bandwidth2),
+		Latency1:    float32(*delay1),
+		Latency2:    float32(*delay2),
+		PacketLoss1: float32(*loss1),
+		PacketLoss2: float32(*loss2),
+		SplitRatio:  float32(*splitRatio),
 	}
 }

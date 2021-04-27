@@ -109,6 +109,13 @@ func initializeServerArguments() (string, *quic.Config) {
 	dumpExperiences := flag.Bool(constants.DUMP_EXPERIENCES_PARAM, false, "a bool(true, false), default: false")
 	epsilon := flag.Float64(constants.EPSILON_PARAM, 0.01, "a float64, default: 0 for epsilon value")
 	allowedCongestion := flag.Int(constants.ALLOWED_CONGESTION_PARAM, 2500, "a Int, default: 2500")
+	bandwidth1 := flag.Float64(constants.BANDWIDTH_1_PARAM, 1.0, "a Float in Mbps, default: 1.0")
+	bandwidth2 := flag.Float64(constants.BANDWIDTH_2_PARAM, 1.0, "a Float in Mbps, default: 1.0")
+	delay1 := flag.Float64(constants.DELAY_1_PARAM, 0.0, "a Float in ms, default: 0.0")
+	delay2 := flag.Float64(constants.DELAY_2_PARAM, 0.0, "a Float in ms, default: 0.0")
+	loss1 := flag.Float64(constants.LOSS_1_PARAM, 0.0, "a Float in %, default: 0.0")
+	loss2 := flag.Float64(constants.LOSS_2_PARAM, 0.0, "a Float in %, default: 0.0")
+	splitRatio := flag.Float64(constants.SPLIT_RATIO_PARAM, 0.0, "a Float, default: 0.0")
 	flag.Parse()
 
 	return serverPort, &quic.Config{
@@ -116,8 +123,16 @@ func initializeServerArguments() (string, *quic.Config) {
 		Scheduler:         *scheduler,
 		CreatePaths:       true,
 		Training:          true,
+		KeepAlive:         true,
 		DumpExperiences:   *dumpExperiences,
 		Epsilon:           *epsilon,
 		AllowedCongestion: *allowedCongestion,
+		Bandwidth1:        float32(*bandwidth1),
+		Bandwidth2:        float32(*bandwidth2),
+		Latency1:          float32(*delay1),
+		Latency2:          float32(*delay2),
+		PacketLoss1:       float32(*loss1),
+		PacketLoss2:       float32(*loss2),
+		SplitRatio:        float32(*splitRatio),
 	}
 }

@@ -3,6 +3,7 @@ import argparse
 import pandas as pd
 
 import mininet_utils
+import utils
 
 parser = argparse.ArgumentParser(description='Run Automated Testing')
 parser.add_argument('--split_ratio', type=str, dest="split_ratio", help="Split Ratio", default="1.0")

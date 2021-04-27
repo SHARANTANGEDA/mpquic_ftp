@@ -17,7 +17,7 @@ samples.remove(".gitkeep")
 for idx, case in enumerate(samples):
     for i in range(0, runs_per_combination):
         transfer_time, avail_cnt, excep_cnt = 0, 0, 0
-        file = open(f'./experiments/{case}/server_{i}.txt', "r")
+        file = open(f'./results/{case}/server_{i}.txt', "r")
         content = file.readlines()
         # print(content)
         try:

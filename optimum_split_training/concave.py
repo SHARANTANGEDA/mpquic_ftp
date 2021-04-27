@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("concave_iters.csv")
+df = pd.read_csv("inter_res_iters.csv")
 
 
 plot = []
@@ -17,19 +17,13 @@ ratios_map = {
     0.11: "10:90",
     0: "0:100"
 }
-id_map ={
-    0.0: "1.0,30ms,0.0,2.0,70ms,1.0",
-    1.0: "1.0,50ms,0.0,1.0,50ms,0.0",
-    2.0: "1.0,50ms,0.0,2.0,50ms,0.0"
-}
-
 
 for idx, item in df.iterrows():
     plot.append((item["Id"], item["path_1_bw"], item["delay_1"], item["loss_1"], item["path_2_bw"], item["delay_2"],
-                 item["loss_2"], item["split_ratio"], item["transfer_time"], item["variance"], id_map[item["Id"]]))
+                 item["loss_2"], ratios_map[item["split_ratio"]], item["transfer_time"], item["variance"]))
 
 df_plot = pd.DataFrame(data=plot,
                        columns=["Id", "path_1_bw", "delay_1", "loss_1", "path_2_bw", "delay_2", "loss_2", "split_ratio",
-                                "transfer_time", "variance", "id_map"])
+                                "transfer_time", "variance"])
 
 df_plot.to_csv("concave_iters.csv", index=False)

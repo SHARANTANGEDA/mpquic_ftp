@@ -1,2 +1,2 @@
 path_1_bw,path_1_delay,path_1_loss,path_2_bw,path_2_delay,path_2_loss
-1.0,50ms,0.0,1.0,50ms,0.0
+3.0,50ms,0.0,5.0,50ms,0.0

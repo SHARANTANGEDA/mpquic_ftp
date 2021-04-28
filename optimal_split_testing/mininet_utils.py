@@ -38,7 +38,7 @@ def _setup_environment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_d
 
 def _run_experiment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_delay, path_2_loss, project_home_dir,
                     current_exp_dir, scheduler_name, split_ratio, i):
-    net = _setup_environment(path_1_bw, str(path_1_delay)+"ms", path_1_loss, path_2_bw, str(path_2_delay)+"ms",
+    net = _setup_environment(path_1_bw, str(path_1_delay) + "ms", path_1_loss, path_2_bw, str(path_2_delay) + "ms",
                              path_2_loss, project_home_dir)
     # Create Exp file
     exp_file_name_server = "server_" + str(i) + ".txt"
@@ -52,14 +52,15 @@ def _run_experiment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_dela
     env_variables_cmd = "cd {} && set -a && source {} && set +a".format(project_home_dir, "envs/mininet.env")
     client_dir = os.path.join(project_home_dir, "client")
     server_cmd = "cd {} && ./server --scheduler={} --bw_1={} --delay_1={} --loss_1={} --bw_2={} --delay_2={} " \
-                 "--loss_2={} > {} &".format(project_home_dir, scheduler_name, path_1_bw, path_1_delay,
-                                             path_1_loss, path_2_bw, path_2_delay, path_2_loss,
-                                             os.path.join(current_exp_dir, exp_file_name_server))
+                 "--loss_2={} --split_ratio={} > {} &".format(project_home_dir, scheduler_name, path_1_bw, path_1_delay,
+                                                              path_1_loss, path_2_bw, path_2_delay, path_2_loss,
+                                                              split_ratio,
+                                                              os.path.join(current_exp_dir, exp_file_name_server))
 
     client_cmd = "cd {} && ./client --scheduler={} --action=2 --file_name=sample.txt --bw_1={} --delay_1={} " \
-                 "--loss_1={} --bw_2={} --delay_2={} --loss_2={} > {}".format(
+                 "--loss_1={} --bw_2={} --delay_2={} --loss_2={} --split_ratio={} > {}".format(
         client_dir, scheduler_name, path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_delay, path_2_loss,
-        os.path.join(current_exp_dir, exp_file_name_client))
+        split_ratio, os.path.join(current_exp_dir, exp_file_name_client))
 
     client.cmd(env_variables_cmd)
     server.cmd(env_variables_cmd)
@@ -84,4 +85,3 @@ def run_exp_for_combination(path_1_bw, path_1_delay, path_1_loss, path_2_bw, pat
     for i in range(0, runs_per_combination):
         _run_experiment(path_1_bw, path_1_delay, path_1_loss, path_2_bw, path_2_delay, path_2_loss, project_home_dir,
                         current_exp_dir, scheduler, split_ratio, i)
-

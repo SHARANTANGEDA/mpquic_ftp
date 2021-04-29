@@ -15,10 +15,9 @@ df = pd.read_csv("combinations.csv")
 results, total_cnt, current_cnt = [], len(df), 0
 schedulers = ["ecf", "blest", "peekaboo", "round_robin", "low_latency"]
 for sch in schedulers:
-    for split in split_ratios_list:
-        for idx, row in df.iterrows():
-            mininet_utils.run_exp_for_combination(row['path_1_bw'], row['delay_1'], row['loss_1'], row['path_2_bw'],
-                                                  row['delay_2'], row['loss_2'], sch, split, runs_per_combination)
-            current_cnt += 1
-            print("Progress: {}/{}; {}% <==> {}/{} {}".format(current_cnt, total_cnt, current_cnt * 100 / total_cnt, idx,
-                                                            len(df), sch))
+    for idx, row in df.iterrows():
+        mininet_utils.run_exp_for_combination(row['path_1_bw'], row['delay_1'], row['loss_1'], row['path_2_bw'],
+                                              row['delay_2'], row['loss_2'], sch, 1, runs_per_combination)
+        current_cnt += 1
+        print("Progress: {}/{}; {}% <==> {}/{} {}".format(current_cnt, total_cnt, current_cnt * 100 / total_cnt, idx,
+                                                        len(df), sch))
